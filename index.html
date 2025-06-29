@@ -17,12 +17,12 @@
         <li><a href="index.html">HOME</a></li>
         <li><a href="about.html">ABOUT</a></li>
         <li><a href="menu.html">MENU</a></li>
-        <li><a href="career.html">CAREER</a></li>
       </ul>
     </nav>
     <div class="header-right">
       <img src="image/cart.png" alt="Cart" class="cart-icon" />
-      <button onclick="handleLogin()">SIGNUP/LOGIN</button>
+      <button onclick="openModal('loginModal')">SIGNUP / LOGIN</button>
+
     </div>
   </header>
 
@@ -34,11 +34,45 @@
         <h2>WELLA’S</h2>
         <h3>BBQ</h3>
         <p>GRILLING SINCE 1989, TURNING EVERY MEAL INTO A TASTE TO REMEMBER</p>
-        <button onclick="orderNow()">ORDER NOW!</button>
+        <button onclick="openModal('signupModal')">ORDER NOW!</button>
       </div>
     </div>
   </main>
 
   <script src="script.js"></script>
+  <!-- LOGIN MODAL -->
+<div class="modal" id="loginModal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('loginModal')">&times;</span>
+    <h2>Login</h2>
+    <form>
+      <label>Email</label>
+      <input type="email" required>
+      <label>Password</label>
+      <input type="password" required>
+      <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="#" onclick="switchTo('signupModal')">Sign Up</a></p>
+  </div>
+</div>
+
+<!-- SIGNUP MODAL -->
+<div class="modal" id="signupModal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('signupModal')">&times;</span>
+    <h2>Sign Up</h2>
+    <form>
+      <label>Full Name</label>
+      <input type="text" required>
+      <label>Email</label>
+      <input type="email" required>
+      <label>Password</label>
+      <input type="password" required>
+      <button type="submit">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="#" onclick="switchTo('loginModal')">Login</a></p>
+  </div>
+</div>
+
 </body>
 </html>

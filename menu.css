@@ -1,0 +1,180 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: black;
+  color: white;
+  overflow-x: hidden;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  background-color: black;
+  border-bottom: 2px solid red;
+  position: relative;
+}
+
+/* Center nav in the header */
+nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+nav a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background-color: red;
+  transition: width 0.3s ease;
+}
+
+nav a:hover {
+  color: red;
+}
+
+nav a:hover::after,
+nav a.active::after {
+  width: 100%;
+}
+
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header-right button {
+  padding: 10px 20px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.header-right button:hover {
+  background-color: darkred;
+  transform: scale(1.05);
+};
+
+
+main {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.menu-heading {
+  text-align: center;
+  font-size: 36px;
+  margin: 40px 0 20px;
+  color: red;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.menu-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 0 40px 60px;
+  animation: fadeIn 1.5s ease;
+}
+
+.menu-item {
+  background-color: #222;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-radius 0.6s ease-in-out;
+}
+
+.menu-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+  border-radius: 50px;
+}
+
+.menu-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.4s ease, border-radius 0.6s ease-in-out;
+}
+
+.menu-item:hover .menu-image {
+  transform: scale(1.1);
+  border-radius: 50% 20% / 30% 40%;
+}
+
+.menu-details {
+  padding: 20px;
+  color: #eee;
+  transition: transform 0.4s ease;
+}
+
+.menu-details h3 {
+  color: red;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.menu-details p {
+  margin: 5px 0;
+  color: #ccc;
+}
+
+.price {
+  font-weight: bold;
+  color: white;
+  margin-top: 10px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
