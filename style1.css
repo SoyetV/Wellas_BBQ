@@ -1,0 +1,88 @@
+ body {
+      font-family: Arial, sans-serif;
+      background-color: white;
+      color: black;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background-color: white;
+      border-bottom: 2px solid black;
+    }
+
+    .logo h1 {
+      font-size: 28px;
+      color: black;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: black;
+      font-size: 18px;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: darkred;
+    }
+
+    .menu-heading {
+      text-align: center;
+      margin: 30px 0;
+      font-size: 36px;
+    }
+
+    .menu-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      padding: 0 40px 40px;
+    }
+
+    .menu-item {
+      width: 300px;
+      background-color: #f9f9f9;
+      border: 2px solid darkred;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .menu-image {
+      height: 200px;
+      background-color: #ccc;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .menu-details {
+      padding: 20px;
+    }
+
+    .menu-details h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .menu-details p {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .menu-details .price {
+      font-weight: bold;
+    }
