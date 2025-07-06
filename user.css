@@ -1,0 +1,88 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: darkred;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.user-container {
+  display: flex;
+  padding: 20px;
+}
+
+.user-sidebar {
+  width: 250px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.user-info {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #eee;
+  margin-bottom: 10px;
+}
+
+.user-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.user-sidebar li {
+  margin: 15px 0;
+}
+
+.user-sidebar a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.user-sidebar a.active,
+.user-sidebar a:hover {
+  color: darkred;
+}
+
+.user-main {
+  flex-grow: 1;
+  margin-left: 20px;
+}
+
+.user-main h2 {
+  margin-bottom: 20px;
+}
+
+.profile-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.profile-card p {
+  margin: 10px 0;
+}
+
+.edit-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: darkred;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}

@@ -2,130 +2,81 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Panel - Wella's BBQ</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background-color: darkred;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-
-    main {
-      max-width: 1000px;
-      margin: 30px auto;
-      background-color: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      padding: 12px;
-      border: 1px solid #ccc;
-      text-align: center;
-    }
-
-    th {
-      background-color: #ddd;
-    }
-
-    .btn {
-      padding: 6px 12px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .view-btn {
-      background-color: #007bff;
-      color: white;
-    }
-
-    .complete-btn {
-      background-color: green;
-      color: white;
-    }
-
-    .cancel-btn {
-      background-color: crimson;
-      color: white;
-    }
-  </style>
+  <title>Customer Orders - Wella's BBQ</title>
+  <link rel="stylesheet" href="admin.css" />
 </head>
 <body>
   <header>
-    <h1>Admin Panel - Wella's BBQ</h1>
+    <div class="logo">
+      <h1>Wella’s BBQ</h1>
+    </div>
   </header>
 
-  <main>
-    <h2>Customer Orders</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Order ID</th>
-          <th>Customer Name</th>
-          <th>Items</th>
-          <th>Total</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1001</td>
-          <td>Juan Dela Cruz</td>
-          <td>Chicken Pecho x2, Pork Liempo x1</td>
-          <td>₱180.00</td>
-          <td>Pending</td>
-          <td>
-            <button class="btn view-btn">View</button>
-            <button class="btn complete-btn">Mark Complete</button>
-            <button class="btn cancel-btn">Cancel</button>
-          </td>
-        </tr>
-        <tr>
-          <td>1002</td>
-          <td>Maria Santos</td>
-          <td>Chicken Paa x1</td>
-          <td>₱60.00</td>
-          <td>Completed</td>
-          <td>
-            <button class="btn view-btn">View</button>
-            <button class="btn cancel-btn">Cancel</button>
-          </td>
-        </tr>
-        <tr>
-          <td>1003</td>
-          <td>Carlos Rivera</td>
-          <td>Chicken Pecho x1, Chicken Paa x1</td>
-          <td>₱120.00</td>
-          <td>Pending</td>
-          <td>
-            <button class="btn view-btn">View</button>
-            <button class="btn complete-btn">Mark Complete</button>
-            <button class="btn cancel-btn">Cancel</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </main>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h3>Admin Menu</h3>
+      <ul>
+        <li><a href="admin.html">Menu Management</a></li>
+        <li><a href="order.html" class="active">Customer Orders</a></li>
+      </ul>
+    </aside>
+
+    
+    <main>
+      <h2>Customer Orders</h2>
+      <section class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer Name</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1001</td>
+              <td>Juan Dela Cruz</td>
+              <td>Chicken Pecho x2, Pork Liempo x1</td>
+              <td>₱180.00</td>
+              <td>Pending</td>
+              <td>
+                <button class="btn view-btn">View</button>
+                <button class="btn complete-btn">Mark Complete</button>
+                <button class="btn cancel-btn">Cancel</button>
+              </td>
+            </tr>
+            <tr>
+              <td>1002</td>
+              <td>Maria Santos</td>
+              <td>Chicken Paa x1</td>
+              <td>₱60.00</td>
+              <td>Completed</td>
+              <td>
+                <button class="btn view-btn">View</button>
+                <button class="btn cancel-btn">Cancel</button>
+              </td>
+            </tr>
+            <tr>
+              <td>1003</td>
+              <td>Carlos Rivera</td>
+              <td>Chicken Pecho x1, Chicken Paa x1</td>
+              <td>₱120.00</td>
+              <td>Pending</td>
+              <td>
+                <button class="btn view-btn">View</button>
+                <button class="btn complete-btn">Mark Complete</button>
+                <button class="btn cancel-btn">Cancel</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
 </body>
 </html>
