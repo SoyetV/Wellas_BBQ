@@ -3,134 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin Dashboard - Wella's BBQ</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      display: flex;
-    }
-
-    .sidebar {
-      width: 240px;
-      background-color: #fff;
-      height: 100vh;
-      padding: 20px;
-      border-right: 1px solid #ccc;
-    }
-
-    .sidebar h2 {
-      margin-bottom: 30px;
-      color: darkred;
-    }
-
-    .sidebar ul {
-      list-style: none;
-    }
-
-    .sidebar li {
-      margin-bottom: 15px;
-    }
-
-    .sidebar a {
-      text-decoration: none;
-      color: #333;
-      font-weight: bold;
-    }
-
-    .sidebar a:hover {
-      color: darkred;
-    }
-
-    .main-content {
-      flex: 1;
-      padding: 30px;
-    }
-
-    .filters {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .filters select {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .section {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
-    }
-
-    .section h3 {
-      margin-bottom: 15px;
-    }
-
-    .image-graph {
-      display: flex;
-      gap: 20px;
-    }
-
-    .image-graph img {
-      width: 200px;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-
-    .graph-placeholder {
-      flex: 1;
-      background: #eee;
-      height: 150px;
-      border-radius: 10px;
-    }
-
-    .donuts {
-      display: flex;
-      gap: 20px;
-    }
-
-    .donut-placeholder {
-      flex: 1;
-      height: 160px;
-      background: #eee;
-      border-radius: 10px;
-    }
-
-    .coupon-usage {
-      display: flex;
-      gap: 15px;
-      margin-top: 20px;
-    }
-
-    .coupon-bar {
-      flex: 1;
-      height: 120px;
-      background: #eee;
-      border-radius: 10px;
-    }
-  </style>
+  <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
   <div class="sidebar">
     <h2>Wella's BBQ</h2>
     <ul>
-      <li><a href="#">Sales & Promotions</a></li>
-      <li><a href="#">Ordering Trends</a></li>
-      <li><a href="#">Staff Timesheet</a></li>
-      <li><a href="#">Inventory Forecast</a></li>
-      <li><a href="#">Payroll Insight</a></li>
+      <li><a href="adminorder.html">Orders</a></li>
+      <li><a href="admin.html">Menu</a></li>
+      <li><a href="#">Sales</a></li>
+     
     </ul>
   </div>
 

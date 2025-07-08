@@ -23,7 +23,7 @@ function handleLogin(event) {
   const accountType = document.getElementById('account-type').value;
 
   if (accountType === "admin") {
-    window.location.href = "admin.html";
+    window.location.href = "dashboard.html";
   } else if (accountType === "user") {
     window.location.href = "user.html";
   } else {
@@ -36,7 +36,7 @@ function handleSignup(event) {
   const accountType = document.getElementById('signup-type').value;
 
   if (accountType === "admin") {
-    window.location.href = "admin.html";
+    window.location.href = "dashboard.html";
   } else if (accountType === "user") {
     window.location.href = "user.html";
   } else {
