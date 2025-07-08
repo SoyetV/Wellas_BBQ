@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inventory - Wella's BBQ</title>
+  <link rel="stylesheet" href="dashboard.css" /> <!-- Reuse same design -->
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Wella's BBQ</h2>
+    <ul>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="adminorder.html">Orders</a></li>
+      <li><a href="admin.html">Menu</a></li>
+      <li><a href="inventory.html" class="active">Inventory</a></li>
+      <li><a href="customer.html">Customers</a></li>
+      <li><a href="report.html">Reports</a></li>
+      <li><a href="#">Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <header>
+      <h1>Inventory Management</h1>
+    </header>
+
+    <section class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Item Name</th>
+            <th>Category</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Pork Meat</td>
+            <td>Meat</td>
+            <td>12</td>
+            <td>kg</td>
+            <td class="low-stock">Low</td>
+          </tr>
+          <tr>
+            <td>Chicken Meat</td>
+            <td>Meat</td>
+            <td>25</td>
+            <td>kg</td>
+            <td>Normal</td>
+          </tr>
+          <tr>
+            <td>BBQ Sticks</td>
+            <td>Supplies</td>
+            <td>200</td>
+            <td>pcs</td>
+            <td>Normal</td>
+          </tr>
+          <tr>
+            <td>Plastic Gloves</td>
+            <td>Supplies</td>
+            <td>5</td>
+            <td>boxes</td>
+            <td class="low-stock">Low</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</body>
+</html>

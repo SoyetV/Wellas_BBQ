@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Wella's BBQ - Admin Dashboard</title>
-  <link rel="stylesheet" href="dashboard.css" />
+  <title>Customers - Wella's BBQ</title>
+  <link rel="stylesheet" href="customer.css" />
 </head>
 <body>
   <div class="sidebar">
     <h2>Wella's BBQ</h2>
     <ul>
       <li><a href="dashboard.html">Dashboard</a></li>
-      <li><a href="adminorder.html">Orders</a></li>
+      <li><a href="adminorder.css">Orders</a></li>
       <li><a href="admin.html">Menu</a></li>
       <li><a href="inventory.html">Inventory</a></li>
-      <li><a href="customer.html">Customers</a></li>
+      <li><a href="customer.html" class="active">Customers</a></li>
       <li><a href="report.html">Reports</a></li>
       <li><a href="#">Settings</a></li>
     </ul>
@@ -22,56 +22,58 @@
 
   <div class="main-content">
     <header>
-      <h1>Dashboard</h1>
+      <h1>Customers</h1>
     </header>
 
     <section class="cards">
       <div class="card">
-        <h3>Orders Today</h3>
-        <p>25</p>
+        <h3>Total Customers</h3>
+        <p>43</p>
       </div>
       <div class="card">
-        <h3>Sales Today</h3>
-        <p>₱3,500</p>
+        <h3>Frequent Buyer</h3>
+        <p>Juan Dela Cruz</p>
       </div>
       <div class="card">
-        <h3>Pending Orders</h3>
+        <h3>New This Week</h3>
         <p>7</p>
       </div>
       <div class="card">
-        <h3>Most Ordered Item</h3>
-        <p>Pork BBQ</p>
+        <h3>Average Orders</h3>
+        <p>3.4 per customer</p>
       </div>
     </section>
 
-    <section class="order-table">
-      <h2>Recent Orders</h2>
+    <section class="customer-table">
+      <h2>Customer List</h2>
       <table>
         <thead>
           <tr>
-            <th>Order ID</th>
-            <th>Customer</th>
-            <th>Items</th>
-            <th>Status</th>
-            <th>Total</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Last Order</th>
+            <th>Total Orders</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>#00123</td>
             <td>Juan Dela Cruz</td>
-            <td>2x Pork BBQ, 1x Rice</td>
-            <td>Preparing</td>
-            <td>₱180</td>
+            <td>09171234567</td>
+            <td>July 6, 2025</td>
+            <td>5</td>
           </tr>
           <tr>
-            <td>#00124</td>
             <td>Maria Santos</td>
-            <td>3x Chicken BBQ</td>
-            <td>Pending</td>
-            <td>₱270</td>
+            <td>09181234567</td>
+            <td>July 5, 2025</td>
+            <td>3</td>
           </tr>
-          <!-- Add more rows as needed -->
+          <tr>
+            <td>Pedro Pascual</td>
+            <td>09191234567</td>
+            <td>July 2, 2025</td>
+            <td>2</td>
+          </tr>
         </tbody>
       </table>
     </section>

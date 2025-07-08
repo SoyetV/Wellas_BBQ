@@ -2,81 +2,84 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Customer Orders - Wella's BBQ</title>
-  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="adminorder.css" />
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <h1>Wella’s BBQ</h1>
-    </div>
-  </header>
 
-  <div class="admin-layout">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <h3>Admin Menu</h3>
-      <ul>
-        <li><a href="admin.html">Menu Management</a></li>
-        <li><a href="order.html" class="active">Customer Orders</a></li>
-      </ul>
-    </aside>
-
-    
-    <main>
-      <h2>Customer Orders</h2>
-      <section class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Customer Name</th>
-              <th>Items</th>
-              <th>Total</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1001</td>
-              <td>Juan Dela Cruz</td>
-              <td>Chicken Pecho x2, Pork Liempo x1</td>
-              <td>₱180.00</td>
-              <td>Pending</td>
-              <td>
-                <button class="btn view-btn">View</button>
-                <button class="btn complete-btn">Mark Complete</button>
-                <button class="btn cancel-btn">Cancel</button>
-              </td>
-            </tr>
-            <tr>
-              <td>1002</td>
-              <td>Maria Santos</td>
-              <td>Chicken Paa x1</td>
-              <td>₱60.00</td>
-              <td>Completed</td>
-              <td>
-                <button class="btn view-btn">View</button>
-                <button class="btn cancel-btn">Cancel</button>
-              </td>
-            </tr>
-            <tr>
-              <td>1003</td>
-              <td>Carlos Rivera</td>
-              <td>Chicken Pecho x1, Chicken Paa x1</td>
-              <td>₱120.00</td>
-              <td>Pending</td>
-              <td>
-                <button class="btn view-btn">View</button>
-                <button class="btn complete-btn">Mark Complete</button>
-                <button class="btn cancel-btn">Cancel</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </main>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Wella's BBQ</h2>
+    <ul>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="adminorder.html" class="active">Orders</a></li>
+      <li><a href="admin.html">Menu</a></li>
+      <li><a href="inventory.html">Inventory</a></li>
+      <li><a href="customer.html">Customers</a></li>
+      <li><a href="report.html">Reports</a></li>
+      <li><a href="#">Settings</a></li>
+    </ul>
   </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <header>
+      <h1>Customer Orders</h1>
+    </header>
+
+    <section class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer Name</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1001</td>
+            <td>Juan Dela Cruz</td>
+            <td>Chicken Pecho x2, Pork Liempo x1</td>
+            <td>₱180.00</td>
+            <td>Pending</td>
+            <td>
+              <button class="btn view-btn">View</button>
+              <button class="btn complete-btn">Mark Complete</button>
+              <button class="btn cancel-btn">Cancel</button>
+            </td>
+          </tr>
+          <tr>
+            <td>1002</td>
+            <td>Maria Santos</td>
+            <td>Chicken Paa x1</td>
+            <td>₱60.00</td>
+            <td>Completed</td>
+            <td>
+              <button class="btn view-btn">View</button>
+              <button class="btn cancel-btn">Cancel</button>
+            </td>
+          </tr>
+          <tr>
+            <td>1003</td>
+            <td>Carlos Rivera</td>
+            <td>Chicken Pecho x1, Chicken Paa x1</td>
+            <td>₱120.00</td>
+            <td>Pending</td>
+            <td>
+              <button class="btn view-btn">View</button>
+              <button class="btn complete-btn">Mark Complete</button>
+              <button class="btn cancel-btn">Cancel</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
 </body>
 </html>
