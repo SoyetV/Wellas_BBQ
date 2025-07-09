@@ -168,23 +168,6 @@ nav a.active::after {
   background-color: darkred;
 }
 
-.cancel-btn {
-  padding: 8px 14px;
-  background-color: #444;
-  color: white;
-  border: 2px solid red;
-  border-radius: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-}
-
-.cancel-btn:hover {
-  background-color: red;
-  color: white;
-}
-
 .mark-btn {
   padding: 6px 14px;
   background-color: green;

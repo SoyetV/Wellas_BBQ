@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cancelled Orders - Wella's BBQ</title>
+  <link rel="stylesheet" href="user.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <h1>Wella’s BBQ</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="user.html">Orders</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="#">Settings</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Section -->
+  <main class="orders-container">
+    <h2>Cancelled Orders</h2>
+
+    <div class="order-status-tabs">
+      <a href="user.html" class="tab">All</a>
+      <a href="topickup.html" class="tab">To Pickup</a>
+      <a href="completed.html" class="tab">Completed</a>
+      <a href="cancelled.html" class="tab active">Cancelled</a>
+    </div>
+
+    <div id="cancelledList"></div>
+  </main>
+
+  <script>
+    function getImageFilename(product) {
+      const map = {
+        "Chicken Pecho": "chicken_pecho.jpg",
+        "Chicken Paa Meal": "chicken_paa.jpg",
+        "Pork Liempo": "pork_liempo.jpg"
+      };
+      return map[product] || "default_bbq.jpg";
+    }
+
+    function loadCancelledOrders() {
+      const cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
+      const container = document.getElementById("cancelledList");
+      container.innerHTML = "";
+
+      if (cancelled.length === 0) {
+        container.innerHTML = "<p style='text-align:center;'>No cancelled orders yet.</p>";
+        return;
+      }
+
+      cancelled.forEach((order, index) => {
+        const card = `
+          <div class="order-card">
+            <div class="order-header">
+              <span class="seller-name">🔥 Wella’s BBQ</span>
+              <span class="order-status cancelled">${order.status}</span>
+            </div>
+            <div class="order-body">
+              <img src="image/${getImageFilename(order.product)}" alt="${order.product}" class="order-img">
+              <div class="order-details">
+                <p><strong>${order.product}</strong></p>
+                <p>Quantity: x${order.quantity}</p>
+                <p>Cancelled On: ${order.time}</p>
+              </div>
+              <div class="order-price">
+                <p>Total: <strong>₱${order.total}</strong></p>
+                <button class="buy-again-btn" onclick="reorder(${index})">Reorder</button>
+                <button class="cancel-btn" onclick="deleteCancelled(${index})">Delete</button>
+              </div>
+            </div>
+          </div>
+        `;
+        container.innerHTML += card;
+      });
+    }
+
+    function reorder(index) {
+      let cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
+      let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+      const orderToReorder = cancelled.splice(index, 1)[0];
+      orderToReorder.status = "READY FOR PICKUP";
+      orderToReorder.time = new Date().toLocaleString();
+
+      orders.push(orderToReorder);
+
+      localStorage.setItem("orders", JSON.stringify(orders));
+      localStorage.setItem("cancelledOrders", JSON.stringify(cancelled));
+
+      alert("Order moved back to My Orders.");
+      loadCancelledOrders();
+    }
+
+    function deleteCancelled(index) {
+      if (!confirm("Are you sure you want to permanently delete this cancelled order?")) return;
+
+      let cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
+      cancelled.splice(index, 1);
+      localStorage.setItem("cancelledOrders", JSON.stringify(cancelled));
+
+      alert("Cancelled order deleted.");
+      loadCancelledOrders();
+    }
+
+    window.addEventListener('DOMContentLoaded', loadCancelledOrders);
+  </script>
+</body>
+</html>

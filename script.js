@@ -23,7 +23,7 @@ function handleLogin(event) {
   if (accountType === "admin") {
     window.location.href = "dashboard.html";
   } else if (accountType === "user") {
-    window.location.href = "homepage.html";
+    window.location.href = "menu.html";
   } else {
     alert("Please select a valid account type.");
   }
@@ -38,7 +38,7 @@ function handleSignup(event) {
   if (accountType === "admin") {
     window.location.href = "dashboard.html";
   } else if (accountType === "user") {
-    window.location.href = "homepage.html";
+    window.location.href = "menu.html";
   } else {
     alert("Please select a valid account type.");
   }

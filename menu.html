@@ -2,54 +2,125 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Menu - Wella's BBQ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Menu - Wella’s BBQ</title>
   <link rel="stylesheet" href="menu.css" />
 </head>
 <body>
+
+  <!-- Header with Navigation -->
   <header>
     <div class="logo">
       <h1>Wella’s BBQ</h1>
     </div>
     <nav>
       <ul>
-        <li><a href="index.html">HOME</a></li>
-        <li><a href="about.html">ABOUT</a></li>
-        <li><a href="menu.html" class="active">MENU</a></li>
+        <li><a href="menu.html" class="active">Menu</a></li>
+        <li><a href="user.html">Orders</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="#">Settings</a></li>
       </ul>
     </nav>
   </header>
 
+  <!-- Main Content -->
   <main>
-    <h2 class="menu-heading">Our Menu</h2>
+    <h2 class="menu-heading">Our Bestsellers</h2>
     <section class="menu-section">
-      <div class="menu-item">
+      <!-- Item 1 -->
+      <div class="menu-item" onclick="openModal('Chicken Pecho', 25, 'image/chicken_pecho.jpg')">
+
         <div class="menu-image" style="background-image: url('image/chicken_pecho.jpg');"></div>
         <div class="menu-details">
           <h3>Chicken Pecho</h3>
-          <p>Tender grilled chicken breast with our signature BBQ glaze.</p>
-          <p class="price">₱60.00</p>
+          <p>Grilled pork barbecue stick marinated in our secret sauce.</p>
+          <p class="price">₱25</p>
         </div>
       </div>
 
-      <div class="menu-item">
+      <!-- Item 2 -->
+      <div class="menu-item" onclick="openModal('Chicken Paa Meal', 60, 'image/chicken_paa.jpg')">
         <div class="menu-image" style="background-image: url('image/chicken_paa.jpg');"></div>
         <div class="menu-details">
-          <h3>Chicken Paa</h3>
-          <p>Juicy grilled chicken leg quarter, cooked to perfection.</p>
-          <p class="price">₱60.00</p>
+          <h3>Chicken Paa Meal</h3>
+          <p>Juicy chicken leg with rice and sauce.</p>
+          <p class="price">₱60</p>
         </div>
       </div>
 
-      <div class="menu-item">
+      <!-- Item 3 -->
+      <div class="menu-item" onclick="openModal('Pork Liempo', 80, 'image/pork_liempo.jpg')">
         <div class="menu-image" style="background-image: url('image/pork_liempo.jpg');"></div>
         <div class="menu-details">
           <h3>Pork Liempo</h3>
-          <p>Classic pork belly BBQ, smoky and savory in every bite.</p>
-          <p class="price">₱60.00</p>
+          <p>Tender grilled pork belly with smoky flavor.</p>
+          <p class="price">₱80</p>
         </div>
       </div>
     </section>
   </main>
+
+  <!-- Modal -->
+  <div class="modal" id="orderModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalItemName">Item Name</h3>
+        <span class="close" onclick="closeModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p class="modal-price">Price: ₱<span id="modalItemPrice">0</span></p>
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" min="1" value="1">
+      </div>
+      <div class="modal-actions">
+       <button onclick="placeOrder()">Order Now</button>
+        <button class="cancel" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script>
+  let selectedProduct = {};
+
+  function openModal(name, price, imagePath) {
+    selectedProduct = { name, price, image: imagePath };
+
+    document.getElementById('modalItemName').textContent = name;
+    document.getElementById('modalItemPrice').textContent = price;
+    document.getElementById('quantity').value = 1;
+    document.getElementById('orderModal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('orderModal').style.display = 'none';
+  }
+
+  function placeOrder() {
+    const quantity = parseInt(document.getElementById("quantity").value);
+    if (!quantity || quantity < 1) {
+      alert("Please enter a valid quantity.");
+      return;
+    }
+
+    const order = {
+      product: selectedProduct.name,
+      quantity: quantity,
+      total: selectedProduct.price * quantity,
+      time: new Date().toLocaleString(),
+      status: "READY FOR PICKUP",
+      image: selectedProduct.image
+    };
+
+    const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
+    existingOrders.push(order);
+    localStorage.setItem("orders", JSON.stringify(existingOrders));
+
+    alert("Order placed successfully!");
+    closeModal();
+  }
+</script>
+
+
 </body>
 </html>

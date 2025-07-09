@@ -1,4 +1,3 @@
-
 * {
   margin: 0;
   padding: 0;
@@ -11,21 +10,19 @@ body {
   color: white;
   overflow-x: hidden;
 }
+
+/* Header */
 header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   padding: 20px 40px;
   background-color: black;
   border-bottom: 2px solid red;
-  position: relative;
 }
 
-/* Center nav in the header */
-nav {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+.logo h1 {
+  color: red;
 }
 
 nav ul {
@@ -37,9 +34,15 @@ nav ul {
 nav a {
   text-decoration: none;
   color: white;
+  font-weight: bold;
   font-size: 18px;
   position: relative;
-  transition: color 0.3s ease;
+  transition: color 0.3s;
+}
+
+nav a:hover,
+nav a.active {
+  color: red;
 }
 
 nav a::after {
@@ -47,14 +50,10 @@ nav a::after {
   position: absolute;
   left: 0;
   bottom: -5px;
-  width: 0;
   height: 2px;
+  width: 0;
   background-color: red;
-  transition: width 0.3s ease;
-}
-
-nav a:hover {
-  color: red;
+  transition: width 0.3s;
 }
 
 nav a:hover::after,
@@ -62,30 +61,7 @@ nav a.active::after {
   width: 100%;
 }
 
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.header-right button {
-  padding: 10px 20px;
-  background-color: red;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s, transform 0.3s ease;
-}
-
-.header-right button:hover {
-  background-color: darkred;
-  transform: scale(1.05);
-};
-
-
+/* Menu Section */
 main {
   padding: 40px 20px;
   max-width: 1200px;
@@ -95,7 +71,7 @@ main {
 .menu-heading {
   text-align: center;
   font-size: 36px;
-  margin: 40px 0 20px;
+  margin-bottom: 30px;
   color: red;
   animation: fadeIn 1s ease-in-out;
 }
@@ -104,7 +80,6 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
-  padding: 0 40px 60px;
   animation: fadeIn 1.5s ease;
 }
 
@@ -137,7 +112,6 @@ main {
 .menu-details {
   padding: 20px;
   color: #eee;
-  transition: transform 0.4s ease;
 }
 
 .menu-details h3 {
@@ -157,10 +131,119 @@ main {
   margin-top: 10px;
 }
 
+/* Modal Overlay */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Box */
+.modal-box {
+  background-color: #111;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Modal Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-header h3 {
+  color: red;
+  font-size: 24px;
+}
+
+.close {
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.close:hover {
+  color: red;
+}
+
+/* Modal Body */
+.modal-body {
+  margin-bottom: 20px;
+}
+
+.modal-body label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: white;
+}
+
+.modal-body input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  outline: none;
+}
+
+/* Modal Actions */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-actions button {
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.modal-actions button:hover {
+  transform: scale(1.05);
+}
+
+.modal-actions .cancel {
+  background-color: #333;
+  color: white;
+}
+
+.modal-actions .cancel:hover {
+  background-color: #555;
+}
+
+.modal-actions button:not(.cancel) {
+  background-color: red;
+  color: white;
+}
+
+.modal-actions button:not(.cancel):hover {
+  background-color: darkred;
+}
+
+/* Optional: fadeIn animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(-20px);
   }
   to {
     opacity: 1;
@@ -168,13 +251,21 @@ main {
   }
 }
 
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
+/* Responsive */
+@media (max-width: 768px) {
+  .menu-section {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  nav ul {
+    flex-wrap: wrap;
+    gap: 20px;
   }
 }

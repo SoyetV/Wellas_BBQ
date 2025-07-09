@@ -3,27 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Orders - Wella's BBQ</title>
+  <title>Completed Orders - Wella's BBQ</title>
   <link rel="stylesheet" href="user.css" />
-  <style>
-    .cancel-btn {
-      padding: 8px 14px;
-      background-color: #555;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      margin-left: 10px;
-    }
-    .cancel-btn:hover {
-      background-color: darkred;
-    }
-  </style>
 </head>
-
 <body>
+
   <!-- Header -->
   <header>
     <div class="logo">
@@ -41,45 +25,44 @@
 
   <!-- Main Section -->
   <main class="orders-container">
-    <h2>My Orders</h2>
+    <h2>Completed Orders</h2>
 
     <div class="order-status-tabs">
-      <a href="user.html" class="tab active">All</a>
+      <a href="user.html" class="tab">All</a>
       <a href="topickup.html" class="tab">To Pickup</a>
-      <a href="completed.html" class="tab">Completed</a>
+      <a href="completed.html" class="tab active">Completed</a>
       <a href="cancelled.html" class="tab">Cancelled</a>
     </div>
 
-    <!-- Orders from localStorage -->
-    <div id="orderList"></div>
+    <div id="completedList"></div>
   </main>
 
   <script>
-    // Load orders from localStorage and display
     window.addEventListener('DOMContentLoaded', () => {
-      const orders = JSON.parse(localStorage.getItem("orders")) || [];
-      const container = document.getElementById("orderList");
+      const orders = JSON.parse(localStorage.getItem("completedOrders")) || [];
+      const container = document.getElementById("completedList");
 
       if (orders.length === 0) {
-        container.innerHTML = "<p style='text-align:center;'>No orders yet.</p>";
+        container.innerHTML = "<p style='text-align:center;'>No completed orders yet.</p>";
       } else {
         orders.forEach((order, index) => {
           const orderCard = `
             <div class="order-card">
               <div class="order-header">
                 <span class="seller-name">🔥 Wella’s BBQ</span>
-                <span class="order-status ${order.status === 'READY FOR PICKUP' ? 'delivered' : ''}">${order.status}</span>
+                <span class="order-status completed">${order.status}</span>
               </div>
               <div class="order-body">
                 <img src="image/${getImageFilename(order.product)}" alt="${order.product}" class="order-img">
                 <div class="order-details">
                   <p><strong>${order.product}</strong></p>
                   <p>Quantity: x${order.quantity}</p>
-                  <p>Pickup Time: ${order.time}</p>
+                  <p>Completed on: ${order.time}</p>
                 </div>
                 <div class="order-price">
                   <p>Total: <strong>₱${order.total}</strong></p>
-                  ${order.status === "READY FOR PICKUP" ? `<button class="cancel-btn" onclick="cancelOrder(${index})">Cancel</button>` : ""}
+                  <button class="buy-again-btn" onclick="reorder(${index})">Reorder</button>
+                  <button class="cancel-btn" onclick="deleteCompleted(${index})">Delete</button>
                 </div>
               </div>
             </div>
@@ -98,20 +81,29 @@
       return map[product] || "default_bbq.jpg";
     }
 
-    function cancelOrder(index) {
-      if (!confirm("Are you sure you want to cancel this order?")) return;
+    function reorder(index) {
+      const completed = JSON.parse(localStorage.getItem("completedOrders")) || [];
+      const orders = JSON.parse(localStorage.getItem("orders")) || [];
 
-      let orders = JSON.parse(localStorage.getItem("orders")) || [];
-      let cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
+      const reorder = completed[index];
+      reorder.status = "READY FOR PICKUP";
+      reorder.time = new Date().toLocaleString();
 
-      const cancelledOrder = orders.splice(index, 1)[0];
-      cancelledOrder.status = "CANCELLED";
-      cancelled.push(cancelledOrder);
-
+      orders.push(reorder);
       localStorage.setItem("orders", JSON.stringify(orders));
-      localStorage.setItem("cancelledOrders", JSON.stringify(cancelled));
 
-      alert("Order has been cancelled.");
+      alert("Order placed again!");
+      location.reload();
+    }
+
+    function deleteCompleted(index) {
+      if (!confirm("Are you sure you want to delete this completed order?")) return;
+
+      const completed = JSON.parse(localStorage.getItem("completedOrders")) || [];
+      completed.splice(index, 1);
+      localStorage.setItem("completedOrders", JSON.stringify(completed));
+
+      alert("Deleted.");
       location.reload();
     }
   </script>
