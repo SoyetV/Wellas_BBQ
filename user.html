@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>User Profile - Wella's BBQ</title>
+  <title>My Orders - Wella's BBQ</title>
   <link rel="stylesheet" href="user.css" />
 </head>
 <body>
@@ -23,25 +23,73 @@
       </div>
       <nav>
         <ul>
-          <li><a href="#" class="active">Profile</a></li>
-          <li><a href="#">My Orders</a></li>
+          <li><a href="#" class="active">My Orders</a></li>
+          <li><a href="#">Profile</a></li>
           <li><a href="#">Settings</a></li>
-          <li><a href="#">Logout</a></li>
+          <li><a href="#" onclick="logout()">Logout</a></li>
         </ul>
       </nav>
     </aside>
 
     <!-- Main Content -->
     <main class="user-main">
-      <h2>My Profile</h2>
-      <div class="profile-card">
-        <p><strong>Full Name:</strong> Juan Dela Cruz</p>
-        <p><strong>Email:</strong> jdc@example.com</p>
-        <p><strong>Phone:</strong> 0917-123-4567</p>
-        <p><strong>Address:</strong> Caridad Norte, Matalom, Leyte</p>
-        <button class="edit-btn">Edit Profile</button>
+      <h2>My Orders</h2>
+
+      <div class="order-status-tabs">
+        <button class="tab active">All</button>
+        <button class="tab">To Pickup</button>
+        <button class="tab">Completed</button>
+        <button class="tab">Cancelled</button>
       </div>
+
+      <div class="order-card">
+        <div class="order-header">
+          <span class="seller-name">🔥 Wella’s BBQ - Main Branch</span>
+          <span class="order-status delivered">READY FOR PICKUP</span>
+        </div>
+        <div class="order-body">
+          <img src="image/pork_liempo.jpg" alt="BBQ Set" class="order-img">
+          <div class="order-details">
+            <p><strong>BBQ Meal Set (5 pcs Pork BBQ + Rice + Drink)</strong></p>
+            <p>Quantity: x1</p>
+            <p>Pick-up Time: July 9, 2025 - 6:00 PM</p>
+          </div>
+          <div class="order-price">
+            <p>Total: <strong>₱150</strong></p>
+            <button class="buy-again-btn">Buy Again</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-card">
+        <div class="order-header">
+          <span class="seller-name">🔥 Wella’s BBQ - Foodcourt</span>
+          <span class="order-status completed">COMPLETED</span>
+        </div>
+        <div class="order-body">
+          <img src="image/chicken_paa.jpg" alt="Chicken" class="order-img">
+          <div class="order-details">
+            <p><strong>Grilled Chicken Rice Meal</strong></p>
+            <p>Quantity: x2</p>
+            <p>Picked up on: July 6, 2025</p>
+          </div>
+          <div class="order-price">
+            <p>Total: <strong>₱240</strong></p>
+            <button class="buy-again-btn">Buy Again</button>
+          </div>
+        </div>
+      </div>
+
     </main>
   </div>
+
+  <script>
+    function logout() {
+      if (confirm("Are you sure you want to logout?")) {
+        localStorage.clear();
+        window.location.href = "login.html";
+      }
+    }
+  </script>
 </body>
 </html>

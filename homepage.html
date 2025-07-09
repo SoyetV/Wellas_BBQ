@@ -4,42 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wella's BBQ</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="homepage.css" />
 </head> 
-<script>
-  window.addEventListener("DOMContentLoaded", function () {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-    const accountType = localStorage.getItem("accountType");
-
-    if (isLoggedIn === "true") {
-      if (accountType === "admin") {
-        window.location.href = "dashboard.html";
-      } else {
-        window.location.href = "homepage.html";
-      }
-    }
-  });
-</script>
-
 <body>
   <header>
     <div class="logo">
       <h1>Wella’s BBQ</h1>
     </div>
-    <nav>
+    <nav>   
       <ul>
-        <li><a href="index.html">HOME</a></li>
+        <li><a href="homepage.html">HOME</a></li>
         <li><a href="about.html">ABOUT</a></li>
         <li><a href="menu.html">MENU</a></li>
       </ul>
     </nav>
     <div class="header-right">
       <img src="image/cart.png" alt="Cart" class="cart-icon" onclick="openModal('signupModal')" />
-      <button class="header-btn" onclick="openModal('loginModal')">Log In</button>
-      <button class="header-btn" onclick="openModal('signupModal')">Sign Up</button>
+       <a href="user.html">
+    <img src="image/user.png" alt="User" class="user-icon" />
+    </a>
+
+       
     </div>
   </header>
-
+  
   <main>
     <div class="hero">
       <div class="hero-img">
@@ -48,13 +36,13 @@
         <h2>WELLA’S</h2>
         <h3>BBQ</h3>
         <p>GRILLING SINCE 1989, TURNING EVERY MEAL INTO A TASTE TO REMEMBER</p>
-        <button onclick="openModal('signupModal')">ORDER NOW!</button>
-      </div>
+        <a href="menu.html" class="order-now-btn">ORDER NOW!</a>
     </div>
   </main>
 
-  <script src="script.js"></script>
+  <script src="homepage.js"></script>
   <!-- LOGIN MODAL -->
+<!-- LOGIN MODAL -->
 <div class="modal" id="loginModal">
   <div class="modal-content">
     <span class="close" onclick="closeModal('loginModal')">&times;</span>

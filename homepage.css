@@ -284,3 +284,25 @@ nav a:hover::after {
   }
 }
 
+.order-now-btn {
+  display: inline-block;
+  padding: 15px 30px;
+  background-color: red;
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition:
+    border-radius 0.8s ease-in-out,
+    background-color 0.3s,
+    transform 0.3s;
+}
+
+.order-now-btn:hover {
+  background-color: darkred;
+  transform: scale(1.05);
+  border-radius: 50%;
+}
