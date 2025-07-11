@@ -131,6 +131,7 @@ main {
   margin-top: 10px;
 }
 
+
 /* Modal Overlay */
 .modal {
   display: none;
@@ -178,6 +179,32 @@ main {
 
 .close:hover {
   color: red;
+}
+
+.order-btn {
+  background: linear-gradient(to right, red, darkred);
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.order-btn:hover {
+  background: linear-gradient(to right, darkred, red);
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+.order-btn:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 /* Modal Body */

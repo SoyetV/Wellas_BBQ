@@ -65,13 +65,13 @@ nav a.active::after {
 /* Orders Section */
 
 .order-status.cancelled {
-  background-color: #444;
+  background-color:red;
   color: white;
 }
 
 .cancel-btn {
   padding: 8px 14px;
-  background-color: #888;
+  background-color: red;
   color: white;
   border: none;
   border-radius: 20px;

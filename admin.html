@@ -16,7 +16,6 @@
       <li><a href="inventory.html">Inventory</a></li>
       <li><a href="customer.html">Customers</a></li>
       <li><a href="report.html">Reports</a></li>
-      <li><a href="#">Settings</a></li>
     </ul>
   </div>
 
@@ -37,6 +36,7 @@
             <th>Name</th>
             <th>Description</th>
             <th>Price</th>
+            <th>Stock</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -46,6 +46,7 @@
             <td>Chicken Pecho</td>
             <td>Tender grilled chicken breast with BBQ glaze.</td>
             <td>₱60.00</td>
+            <td><input type="number" class="stock-input" value="10" min="0" data-id="1" data-name="Chicken Pecho"></td>
             <td>
               <button class="btn edit-btn">Edit</button>
               <button class="btn delete-btn">Delete</button>
@@ -56,6 +57,7 @@
             <td>Chicken Paa</td>
             <td>Juicy grilled chicken leg quarter.</td>
             <td>₱60.00</td>
+            <td><input type="number" class="stock-input" value="15" min="0" data-id="2" data-name="Chicken Paa"></td>
             <td>
               <button class="btn edit-btn">Edit</button>
               <button class="btn delete-btn">Delete</button>
@@ -65,7 +67,8 @@
             <td>3</td>
             <td>Pork Liempo</td>
             <td>Smoky grilled pork belly BBQ.</td>
-            <td>₱60.00</td>
+            <td>₱80.00</td>
+            <td><input type="number" class="stock-input" value="20" min="0" data-id="3" data-name="Pork Liempo"></td>
             <td>
               <button class="btn edit-btn">Edit</button>
               <button class="btn delete-btn">Delete</button>
@@ -73,7 +76,35 @@
           </tr>
         </tbody>
       </table>
+
+      <button class="btn save-btn" onclick="saveStock()">Save Stock</button>
     </section>
   </div>
+
+  <script>
+    function saveStock() {
+      const stockInputs = document.querySelectorAll(".stock-input");
+      const stockData = [];
+
+      stockInputs.forEach(input => {
+        stockData.push({
+          id: parseInt(input.dataset.id),
+          name: input.dataset.name,
+          stock: parseInt(input.value) || 0
+        });
+      });
+
+      localStorage.setItem("stockData", JSON.stringify(stockData));
+      alert("Stock saved successfully!");
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedStock = JSON.parse(localStorage.getItem("stockData")) || [];
+      savedStock.forEach(item => {
+        const input = document.querySelector(`input[data-id="${item.id}"]`);
+        if (input) input.value = item.stock;
+      });
+    });
+  </script>
 </body>
 </html>

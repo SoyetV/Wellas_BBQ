@@ -153,6 +153,44 @@ tr:hover {
   color: white;
 }
 
+/* Stock Input */
+.stock-input {
+  width: 60px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+}
+
+/* Save Button */
+.save-btn {
+  background-color: #007bff;
+  color: white;
+  margin-top: 15px;
+}
+
+.modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+    }
 /* Animation */
 @keyframes fadeInUp {
   from {

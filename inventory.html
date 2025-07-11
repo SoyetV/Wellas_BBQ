@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Inventory - Wella's BBQ</title>
-  <link rel="stylesheet" href="dashboard.css" /> <!-- Reuse same design -->
+  <link rel="stylesheet" href="inventory.css" />
 </head>
 <body>
+  <!-- Sidebar -->
   <div class="sidebar">
     <h2>Wella's BBQ</h2>
     <ul>
@@ -16,17 +17,19 @@
       <li><a href="inventory.html" class="active">Inventory</a></li>
       <li><a href="customer.html">Customers</a></li>
       <li><a href="report.html">Reports</a></li>
-      <li><a href="#">Settings</a></li>
     </ul>
   </div>
 
+  <!-- Main -->
   <div class="main-content">
     <header>
       <h1>Inventory Management</h1>
     </header>
 
+    <button class="btn add-btn" onclick="openModal()">+ Add Item</button>
+
     <section class="table-container">
-      <table>
+      <table id="inventoryTable">
         <thead>
           <tr>
             <th>Item Name</th>
@@ -34,40 +37,135 @@
             <th>Quantity</th>
             <th>Unit</th>
             <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>Pork Meat</td>
-            <td>Meat</td>
-            <td>12</td>
-            <td>kg</td>
-            <td class="low-stock">Low</td>
-          </tr>
-          <tr>
-            <td>Chicken Meat</td>
-            <td>Meat</td>
-            <td>25</td>
-            <td>kg</td>
-            <td>Normal</td>
-          </tr>
-          <tr>
-            <td>BBQ Sticks</td>
-            <td>Supplies</td>
-            <td>200</td>
-            <td>pcs</td>
-            <td>Normal</td>
-          </tr>
-          <tr>
-            <td>Plastic Gloves</td>
-            <td>Supplies</td>
-            <td>5</td>
-            <td>boxes</td>
-            <td class="low-stock">Low</td>
-          </tr>
-        </tbody>
+        <tbody></tbody>
       </table>
     </section>
   </div>
+
+  <!-- Modal -->
+  <div class="modal" id="inventoryModal">
+    <div class="modal-content">
+      <h3 id="modalTitle">Add Inventory Item</h3>
+      <input type="hidden" id="editIndex">
+      <label>Item Name:</label>
+      <input type="text" id="itemName" required>
+      <label>Category:</label>
+      <input type="text" id="category" required>
+      <label>Quantity:</label>
+      <input type="number" id="quantity" min="0" required>
+      <label>Unit:</label>
+      <input type="text" id="unit" required>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn cancel-btn" onclick="closeModal()">Cancel</button>
+        <button class="btn save-btn" onclick="saveInventory()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let inventory = JSON.parse(localStorage.getItem("inventoryData")) || [];
+
+    function syncWithOrders() {
+      const orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+      orders.forEach(order => {
+        const inventoryItem = inventory.find(i => i.name.trim().toLowerCase() === order.product.trim().toLowerCase());
+        if (inventoryItem) {
+          inventoryItem.quantity = Math.max(0, inventoryItem.quantity - order.quantity);
+        }
+      });
+
+      localStorage.setItem("inventoryData", JSON.stringify(inventory));
+    }
+
+    function renderInventory() {
+      syncWithOrders(); // Sync before render
+
+      const tbody = document.querySelector("#inventoryTable tbody");
+      tbody.innerHTML = "";
+
+      inventory.forEach((item, index) => {
+        const status = item.quantity <= 10 ? "Low" : "Normal";
+        const row = `
+          <tr>
+            <td>${item.name}</td>
+            <td>${item.category}</td>
+            <td>${item.quantity}</td>
+            <td>${item.unit}</td>
+            <td class="${status === 'Low' ? 'low-stock' : ''}">${status}</td>
+            <td>
+              <button class="btn edit-btn" onclick="editInventory(${index})">Edit</button>
+              <button class="btn delete-btn" onclick="deleteInventory(${index})">Delete</button>
+            </td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    }
+
+    function openModal() {
+      document.getElementById("inventoryModal").style.display = "flex";
+      document.getElementById("modalTitle").textContent = "Add Inventory Item";
+      document.getElementById("itemName").value = "";
+      document.getElementById("category").value = "";
+      document.getElementById("quantity").value = "";
+      document.getElementById("unit").value = "";
+      document.getElementById("editIndex").value = "";
+    }
+
+    function closeModal() {
+      document.getElementById("inventoryModal").style.display = "none";
+    }
+
+    function saveInventory() {
+      const name = document.getElementById("itemName").value.trim();
+      const category = document.getElementById("category").value.trim();
+      const quantity = parseInt(document.getElementById("quantity").value);
+      const unit = document.getElementById("unit").value.trim();
+      const index = document.getElementById("editIndex").value;
+
+      if (!name || !category || isNaN(quantity) || !unit) return alert("Please complete all fields.");
+
+      const newItem = { name, category, quantity, unit };
+
+      if (index === "") {
+        inventory.push(newItem);
+      } else {
+        inventory[index] = newItem;
+      }
+
+      localStorage.setItem("inventoryData", JSON.stringify(inventory));
+      renderInventory();
+      closeModal();
+    }
+
+    function editInventory(index) {
+      const item = inventory[index];
+      document.getElementById("inventoryModal").style.display = "flex";
+      document.getElementById("modalTitle").textContent = "Edit Inventory Item";
+      document.getElementById("itemName").value = item.name;
+      document.getElementById("category").value = item.category;
+      document.getElementById("quantity").value = item.quantity;
+      document.getElementById("unit").value = item.unit;
+      document.getElementById("editIndex").value = index;
+    }
+
+    function deleteInventory(index) {
+      if (confirm("Delete this item?")) {
+        inventory.splice(index, 1);
+        localStorage.setItem("inventoryData", JSON.stringify(inventory));
+        renderInventory();
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", renderInventory);  // Load on page open
+    window.addEventListener("storage", renderInventory);           // Re-render when stockData changes from another page
+    
+    
+  </script>
 </body>
 </html>
