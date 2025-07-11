@@ -27,9 +27,8 @@
   <main>
     <h2 class="menu-heading">Our Bestsellers</h2>
     <section class="menu-section">
-      <!-- Item 1 -->
-      <div class="menu-item" onclick="openModal('Chicken Pecho', 25, 'image/chicken_pecho.jpg')">
-
+      <!-- Chicken Pecho -->
+      <div class="menu-item" onclick="openModal('Chicken Pecho', 25)">
         <div class="menu-image" style="background-image: url('image/chicken_pecho.jpg');"></div>
         <div class="menu-details">
           <h3>Chicken Pecho</h3>
@@ -38,8 +37,8 @@
         </div>
       </div>
 
-      <!-- Item 2 -->
-      <div class="menu-item" onclick="openModal('Chicken Paa Meal', 60, 'image/chicken_paa.jpg')">
+      <!-- Chicken Paa -->
+      <div class="menu-item" onclick="openModal('Chicken Paa Meal', 60)">
         <div class="menu-image" style="background-image: url('image/chicken_paa.jpg');"></div>
         <div class="menu-details">
           <h3>Chicken Paa Meal</h3>
@@ -48,8 +47,8 @@
         </div>
       </div>
 
-      <!-- Item 3 -->
-      <div class="menu-item" onclick="openModal('Pork Liempo', 80, 'image/pork_liempo.jpg')">
+      <!-- Pork Liempo -->
+      <div class="menu-item" onclick="openModal('Pork Liempo', 80)">
         <div class="menu-image" style="background-image: url('image/pork_liempo.jpg');"></div>
         <div class="menu-details">
           <h3>Pork Liempo</h3>
@@ -73,7 +72,7 @@
         <input type="number" id="quantity" min="1" value="1">
       </div>
       <div class="modal-actions">
-       <button onclick="placeOrder()">Order Now</button>
+        <button onclick="placeOrder()">Order Now</button>
         <button class="cancel" onclick="closeModal()">Cancel</button>
       </div>
     </div>
@@ -81,46 +80,44 @@
 
   <!-- Script -->
   <script>
-  let selectedProduct = {};
+    let currentProductName = "";
+    let currentProductPrice = 0;
 
-  function openModal(name, price, imagePath) {
-    selectedProduct = { name, price, image: imagePath };
-
-    document.getElementById('modalItemName').textContent = name;
-    document.getElementById('modalItemPrice').textContent = price;
-    document.getElementById('quantity').value = 1;
-    document.getElementById('orderModal').style.display = 'flex';
-  }
-
-  function closeModal() {
-    document.getElementById('orderModal').style.display = 'none';
-  }
-
-  function placeOrder() {
-    const quantity = parseInt(document.getElementById("quantity").value);
-    if (!quantity || quantity < 1) {
-      alert("Please enter a valid quantity.");
-      return;
+    function openModal(name, price) {
+      currentProductName = name;
+      currentProductPrice = price;
+      document.getElementById('modalItemName').textContent = name;
+      document.getElementById('modalItemPrice').textContent = price;
+      document.getElementById('quantity').value = 1;
+      document.getElementById('orderModal').style.display = 'flex';
     }
 
-    const order = {
-      product: selectedProduct.name,
-      quantity: quantity,
-      total: selectedProduct.price * quantity,
-      time: new Date().toLocaleString(),
-      status: "READY FOR PICKUP",
-      image: selectedProduct.image
-    };
+    function closeModal() {
+      document.getElementById('orderModal').style.display = 'none';
+    }
 
-    const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
-    existingOrders.push(order);
-    localStorage.setItem("orders", JSON.stringify(existingOrders));
+    function placeOrder() {
+      const quantity = parseInt(document.getElementById("quantity").value);
+      if (!quantity || quantity < 1) {
+        alert("Please enter a valid quantity.");
+        return;
+      }
 
-    alert("Order placed successfully!");
-    closeModal();
-  }
-</script>
+      const order = {
+        product: currentProductName,
+        quantity: quantity,
+        total: currentProductPrice * quantity,
+        time: new Date().toLocaleString(),
+        status: "READY FOR PICKUP"
+      };
 
+      const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
+      existingOrders.push(order);
+      localStorage.setItem("orders", JSON.stringify(existingOrders));
 
+      alert("Order placed successfully!");
+      closeModal();
+    }
+  </script>
 </body>
 </html>

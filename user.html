@@ -32,7 +32,7 @@
     <nav>
       <ul>
         <li><a href="menu.html">Menu</a></li>
-        <li><a href="user.html">Orders</a></li>
+        <li><a href="user.html" class="active">Orders</a></li>
         <li><a href="profile.html">Profile</a></li>
         <li><a href="#">Settings</a></li>
       </ul>
@@ -103,13 +103,26 @@
 
       let orders = JSON.parse(localStorage.getItem("orders")) || [];
       let cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
+      let allOrders = JSON.parse(localStorage.getItem("allOrders")) || [];
 
       const cancelledOrder = orders.splice(index, 1)[0];
       cancelledOrder.status = "CANCELLED";
       cancelled.push(cancelledOrder);
 
+      // Update allOrders too (based on unique values)
+      const matchIndex = allOrders.findIndex(order =>
+        order.time === cancelledOrder.time &&
+        order.product === cancelledOrder.product &&
+        order.total === cancelledOrder.total
+      );
+
+      if (matchIndex !== -1) {
+        allOrders[matchIndex].status = "CANCELLED";
+      }
+
       localStorage.setItem("orders", JSON.stringify(orders));
       localStorage.setItem("cancelledOrders", JSON.stringify(cancelled));
+      localStorage.setItem("allOrders", JSON.stringify(allOrders));
 
       alert("Order has been cancelled.");
       location.reload();

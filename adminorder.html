@@ -5,9 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Customer Orders - Wella's BBQ</title>
   <link rel="stylesheet" href="adminorder.css" />
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const orders = JSON.parse(localStorage.getItem("orders")) || [];
+      const completed = JSON.parse(localStorage.getItem("completedOrders")) || [];
+      const cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
+
+      const tableBody = document.getElementById("ordersTableBody");
+      tableBody.innerHTML = "";
+
+      orders.forEach((order, index) => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+          <td>${1001 + index}</td>
+          <td>Guest Customer</td>
+          <td>${order.product} x${order.quantity}</td>
+          <td>₱${order.total.toFixed(2)}</td>
+          <td>${order.status}</td>
+          <td>
+            <button class="btn view-btn" onclick="alert('Product: ${order.product}\nQty: ${order.quantity}\nTime: ${order.time}')">View</button>
+            <button class="btn complete-btn" onclick="markComplete(${index})">Mark Complete</button>
+            <button class="btn cancel-btn" onclick="cancelOrder(${index})">Cancel</button>
+          </td>
+        `;
+
+        tableBody.appendChild(row);
+      });
+    });
+
+    function markComplete(index) {
+      let orders = JSON.parse(localStorage.getItem("orders")) || [];
+      let completed = JSON.parse(localStorage.getItem("completedOrders")) || [];
+      const completedOrder = orders.splice(index, 1)[0];
+      completedOrder.status = "COMPLETED";
+      completed.push(completedOrder);
+
+      localStorage.setItem("orders", JSON.stringify(orders));
+      localStorage.setItem("completedOrders", JSON.stringify(completed));
+      location.reload();
+    }
+
+    function cancelOrder(index) {
+      if (!confirm("Are you sure you want to cancel this order?")) return;
+      let orders = JSON.parse(localStorage.getItem("orders")) || [];
+      let cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
+      const cancelledOrder = orders.splice(index, 1)[0];
+      cancelledOrder.status = "CANCELLED";
+      cancelled.push(cancelledOrder);
+
+      localStorage.setItem("orders", JSON.stringify(orders));
+      localStorage.setItem("cancelledOrders", JSON.stringify(cancelled));
+      location.reload();
+    }
+  </script>
 </head>
 <body>
-
   <!-- Sidebar -->
   <div class="sidebar">
     <h2>Wella's BBQ</h2>
@@ -40,46 +93,75 @@
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>1001</td>
-            <td>Juan Dela Cruz</td>
-            <td>Chicken Pecho x2, Pork Liempo x1</td>
-            <td>₱180.00</td>
-            <td>Pending</td>
-            <td>
-              <button class="btn view-btn">View</button>
-              <button class="btn complete-btn">Mark Complete</button>
-              <button class="btn cancel-btn">Cancel</button>
-            </td>
-          </tr>
-          <tr>
-            <td>1002</td>
-            <td>Maria Santos</td>
-            <td>Chicken Paa x1</td>
-            <td>₱60.00</td>
-            <td>Completed</td>
-            <td>
-              <button class="btn view-btn">View</button>
-              <button class="btn cancel-btn">Cancel</button>
-            </td>
-          </tr>
-          <tr>
-            <td>1003</td>
-            <td>Carlos Rivera</td>
-            <td>Chicken Pecho x1, Chicken Paa x1</td>
-            <td>₱120.00</td>
-            <td>Pending</td>
-            <td>
-              <button class="btn view-btn">View</button>
-              <button class="btn complete-btn">Mark Complete</button>
-              <button class="btn cancel-btn">Cancel</button>
-            </td>
-          </tr>
-        </tbody>
+       <tbody id="orderTableBody">
+  <!-- JS will populate rows here -->
+</tbody>
+
       </table>
     </section>
   </div>
+  <script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const tableBody = document.getElementById("orderTableBody");
+
+    if (orders.length === 0) {
+      tableBody.innerHTML = "<tr><td colspan='6'>No orders yet.</td></tr>";
+    } else {
+      orders.forEach((order, index) => {
+        const row = `
+          <tr>
+            <td>ORD-${1000 + index}</td>
+            <td>Guest</td>
+            <td>${order.product} x${order.quantity}</td>
+            <td>₱${order.total}</td>
+            <td>${order.status}</td>
+            <td>
+              <button class="btn view-btn" onclick="viewOrder(${index})">View</button>
+              <button class="btn complete-btn" onclick="markComplete(${index})">Mark Complete</button>
+              <button class="btn cancel-btn" onclick="cancelOrder(${index})">Cancel</button>
+            </td>
+          </tr>
+        `;
+        tableBody.innerHTML += row;
+      });
+    }
+  });
+
+  function markComplete(index) {
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const completed = JSON.parse(localStorage.getItem("completedOrders")) || [];
+
+    const order = orders.splice(index, 1)[0];
+    order.status = "COMPLETED";
+    completed.push(order);
+
+    localStorage.setItem("orders", JSON.stringify(orders));
+    localStorage.setItem("completedOrders", JSON.stringify(completed));
+    alert("Order marked as completed.");
+    location.reload();
+  }
+
+  function cancelOrder(index) {
+    if (!confirm("Cancel this order?")) return;
+
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
+
+    const order = orders.splice(index, 1)[0];
+    order.status = "CANCELLED";
+    cancelled.push(order);
+
+    localStorage.setItem("orders", JSON.stringify(orders));
+    localStorage.setItem("cancelledOrders", JSON.stringify(cancelled));
+    alert("Order has been cancelled.");
+    location.reload();
+  }
+
+  function viewOrder(index) {
+    alert(`Viewing Order #${1000 + index}`);
+  }
+</script>
 
 </body>
 </html>

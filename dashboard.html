@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Wella's BBQ - Admin Dashboard</title>
   <link rel="stylesheet" href="dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="sidebar">
@@ -27,21 +28,26 @@
 
     <section class="cards">
       <div class="card">
-        <h3>Orders Today</h3>
-        <p>25</p>
+        <h3>Total Orders</h3>
+        <p id="totalOrders">0</p>
       </div>
       <div class="card">
-        <h3>Sales Today</h3>
-        <p>₱3,500</p>
+        <h3>Pending / To Pickup</h3>
+        <p id="pendingOrders">0</p>
       </div>
       <div class="card">
-        <h3>Pending Orders</h3>
-        <p>7</p>
+        <h3>Completed Orders</h3>
+        <p id="completedOrders">0</p>
       </div>
       <div class="card">
-        <h3>Most Ordered Item</h3>
-        <p>Pork BBQ</p>
+        <h3>Cancelled Orders</h3>
+        <p id="cancelledOrders">0</p>
       </div>
+    </section>
+
+    <section class="chart-section">
+      <h2>Order Summary</h2>
+      <canvas id="orderChart"></canvas>
     </section>
 
     <section class="order-table">
@@ -49,32 +55,67 @@
       <table>
         <thead>
           <tr>
-            <th>Order ID</th>
-            <th>Customer</th>
-            <th>Items</th>
+            <th>Product</th>
+            <th>Quantity</th>
             <th>Status</th>
             <th>Total</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>#00123</td>
-            <td>Juan Dela Cruz</td>
-            <td>2x Pork BBQ, 1x Rice</td>
-            <td>Preparing</td>
-            <td>₱180</td>
-          </tr>
-          <tr>
-            <td>#00124</td>
-            <td>Maria Santos</td>
-            <td>3x Chicken BBQ</td>
-            <td>Pending</td>
-            <td>₱270</td>
-          </tr>
-          <!-- Add more rows as needed -->
-        </tbody>
+        <tbody id="recentOrders"></tbody>
       </table>
     </section>
   </div>
+
+  <script>
+    function loadDashboardData() {
+      const orders = JSON.parse(localStorage.getItem("orders")) || [];
+      const completed = JSON.parse(localStorage.getItem("completedOrders")) || [];
+      const cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
+
+      const total = orders.length + completed.length + cancelled.length;
+      const pending = orders.length;
+
+      document.getElementById("totalOrders").textContent = total;
+      document.getElementById("pendingOrders").textContent = pending;
+      document.getElementById("completedOrders").textContent = completed.length;
+      document.getElementById("cancelledOrders").textContent = cancelled.length;
+
+      const recentContainer = document.getElementById("recentOrders");
+      const allOrders = [...orders, ...completed, ...cancelled];
+
+      allOrders.slice(-5).reverse().forEach(order => {
+        const row = `<tr>
+          <td>${order.product}</td>
+          <td>x${order.quantity}</td>
+          <td>${order.status}</td>
+          <td>₱${order.total}</td>
+        </tr>`;
+        recentContainer.innerHTML += row;
+      });
+
+      // ChartJS Bar Chart
+      const ctx = document.getElementById('orderChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['To Pickup', 'Completed', 'Cancelled'],
+          datasets: [{
+            label: 'Order Count',
+            data: [pending, completed.length, cancelled.length],
+            backgroundColor: ['#f39c12', '#2ecc71', '#e74c3c']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            title: { display: false }
+          }
+        }
+      });
+    }
+
+    window.onload = loadDashboardData;
+  </script>
 </body>
 </html>
