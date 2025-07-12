@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Reports - Wella's BBQ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="report.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="admin-layout">
-    <!-- Sidebar -->
     <aside class="sidebar">
       <h2>Wella's BBQ</h2>
       <ul>
         <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="#">Orders</a></li>
-        <li><a href="#">Menu</a></li>
+        <li><a href="adminorder.html">Orders</a></li>
+        <li><a href="admin.html">Menu</a></li>
         <li><a href="inventory.html">Inventory</a></li>
         <li><a href="customer.html">Customers</a></li>
         <li><a href="report.html" class="active">Reports</a></li>
@@ -22,30 +22,15 @@
       </ul>
     </aside>
 
-    <!-- Main Content -->
     <main class="main-content">
-      <header>
-        <h1>Sales Reports</h1>
-      </header>
+      <header><h1>Sales Reports</h1></header>
 
-      <!-- Cards -->
-      <section class="cards">
-        <div class="card">
-          <h3>Daily Sales</h3>
-          <p>₱3,500</p>
-        </div>
-        <div class="card">
-          <h3>Weekly Sales</h3>
-          <p>₱24,300</p>
-        </div>
-        <div class="card">
-          <h3>Monthly Sales</h3>
-          <p>₱98,700</p>
-        </div>
-        <div class="card">
-          <h3>Top Item</h3>
-          <p>Pork BBQ</p>
-        </div>
+      <!-- Sales Cards -->
+      <section class="cards" id="reportCards"></section>
+
+      <!-- Chart -->
+      <section class="chart-container">
+        <canvas id="salesChart"></canvas>
       </section>
 
       <!-- Table -->
@@ -54,35 +39,113 @@
         <table>
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Orders</th>
+              <th>Date & Time</th>
+              <th>Quantity</th>
               <th>Revenue</th>
-              <th>Top Item</th>
+              <th>Item</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>July 6, 2025</td>
-              <td>25</td>
-              <td>₱3,500</td>
-              <td>Pork BBQ</td>
-            </tr>
-            <tr>
-              <td>July 5, 2025</td>
-              <td>20</td>
-              <td>₱3,000</td>
-              <td>Chicken BBQ</td>
-            </tr>
-            <tr>
-              <td>July 4, 2025</td>
-              <td>18</td>
-              <td>₱2,700</td>
-              <td>Rice</td>
-            </tr>
-          </tbody>
+          <tbody id="summaryTable"></tbody>
         </table>
       </section>
     </main>
   </div>
+
+  <script>
+    const allOrders = JSON.parse(localStorage.getItem("allOrders")) || [];
+
+    const today = new Date();
+    const dayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const weekStart = new Date(today); weekStart.setDate(today.getDate() - 7);
+    const monthStart = new Date(today); monthStart.setDate(today.getDate() - 30);
+
+    let daily = 0, weekly = 0, monthly = 0;
+    let productCount = {};
+
+    const filteredOrders = allOrders.filter(o => o.status === "READY FOR PICKUP" && o.total);
+
+    filteredOrders.forEach(order => {
+      const dt = new Date(order.time);
+      const total = parseFloat(order.total) || 0;
+
+      if (dt >= dayStart) daily += total;
+      if (dt >= weekStart) weekly += total;
+      if (dt >= monthStart) monthly += total;
+
+      productCount[order.product] = (productCount[order.product] || 0) + order.quantity;
+    });
+
+    const topProduct = Object.entries(productCount).sort((a,b) => b[1] - a[1])[0]?.[0] || "None";
+
+    // Fill sales cards
+    document.getElementById("reportCards").innerHTML = `
+      <div class="card"><h3>Daily Sales</h3><p>₱${daily.toFixed(2)}</p></div>
+      <div class="card"><h3>Weekly Sales</h3><p>₱${weekly.toFixed(2)}</p></div>
+      <div class="card"><h3>Monthly Sales</h3><p>₱${monthly.toFixed(2)}</p></div>
+      <div class="card"><h3>Top Item</h3><p>${topProduct}</p></div>
+    `;
+
+    // Fill recent sales table (individual orders)
+    const summaryTable = document.getElementById("summaryTable");
+    const recentOrders = filteredOrders
+      .sort((a, b) => new Date(b.time) - new Date(a.time))
+      .slice(0, 10);
+
+    recentOrders.forEach(order => {
+      const dateTime = new Date(order.time).toLocaleString('en-US', {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+      });
+
+      summaryTable.innerHTML += `
+        <tr>
+          <td>${dateTime}</td>
+          <td>${order.quantity}</td>
+          <td>₱${(order.total || 0).toFixed(2)}</td>
+          <td>${order.product}</td>
+        </tr>
+      `;
+    });
+
+    // Chart.js
+    const chartLabels = [];
+    const chartData = [];
+
+    // Count by day
+    const dayMap = {};
+    filteredOrders.forEach(order => {
+      const dateKey = new Date(order.time).toLocaleDateString();
+      dayMap[dateKey] = (dayMap[dateKey] || 0) + (parseFloat(order.total) || 0);
+    });
+
+    Object.keys(dayMap).sort((a, b) => new Date(a) - new Date(b)).forEach(key => {
+      chartLabels.push(key);
+      chartData.push(dayMap[key].toFixed(2));
+    });
+
+    new Chart(document.getElementById("salesChart"), {
+      type: "bar",
+      data: {
+        labels: chartLabels,
+        datasets: [{
+          label: 'Daily Revenue (₱)',
+          data: chartData,
+          backgroundColor: 'rgba(255, 99, 132, 0.6)',
+          borderRadius: 5
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+  </script>
 </body>
 </html>

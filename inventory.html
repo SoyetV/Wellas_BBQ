@@ -69,22 +69,7 @@
   <script>
     let inventory = JSON.parse(localStorage.getItem("inventoryData")) || [];
 
-    function syncWithOrders() {
-      const orders = JSON.parse(localStorage.getItem("orders")) || [];
-
-      orders.forEach(order => {
-        const inventoryItem = inventory.find(i => i.name.trim().toLowerCase() === order.product.trim().toLowerCase());
-        if (inventoryItem) {
-          inventoryItem.quantity = Math.max(0, inventoryItem.quantity - order.quantity);
-        }
-      });
-
-      localStorage.setItem("inventoryData", JSON.stringify(inventory));
-    }
-
     function renderInventory() {
-      syncWithOrders(); // Sync before render
-
       const tbody = document.querySelector("#inventoryTable tbody");
       tbody.innerHTML = "";
 
@@ -105,6 +90,14 @@
         `;
         tbody.innerHTML += row;
       });
+
+      // Also update stockData used by admin.html & menu.html
+      const stockData = inventory.map(item => ({
+        name: item.name,
+        stock: item.quantity
+      }));
+      localStorage.setItem("stockData", JSON.stringify(stockData));
+      localStorage.setItem("inventoryData", JSON.stringify(inventory));
     }
 
     function openModal() {
@@ -128,7 +121,9 @@
       const unit = document.getElementById("unit").value.trim();
       const index = document.getElementById("editIndex").value;
 
-      if (!name || !category || isNaN(quantity) || !unit) return alert("Please complete all fields.");
+      if (!name || !category || isNaN(quantity) || !unit) {
+        return alert("Please complete all fields.");
+      }
 
       const newItem = { name, category, quantity, unit };
 
@@ -138,7 +133,6 @@
         inventory[index] = newItem;
       }
 
-      localStorage.setItem("inventoryData", JSON.stringify(inventory));
       renderInventory();
       closeModal();
     }
@@ -157,15 +151,12 @@
     function deleteInventory(index) {
       if (confirm("Delete this item?")) {
         inventory.splice(index, 1);
-        localStorage.setItem("inventoryData", JSON.stringify(inventory));
         renderInventory();
       }
     }
 
-    window.addEventListener("DOMContentLoaded", renderInventory);  // Load on page open
-    window.addEventListener("storage", renderInventory);           // Re-render when stockData changes from another page
-    
-    
+    window.addEventListener("DOMContentLoaded", renderInventory);
+    window.addEventListener("storage", renderInventory)
   </script>
 </body>
 </html>

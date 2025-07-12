@@ -5,22 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Orders - Wella's BBQ</title>
   <link rel="stylesheet" href="user.css" />
-  <style>
-    .cancel-btn {
-      padding: 8px 14px;
-      background-color: #555;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      margin-left: 10px;
-    }
-    .cancel-btn:hover {
-      background-color: darkred;
-    }
-  </style>
 </head>
 
 <body>
@@ -55,78 +39,95 @@
   </main>
 
   <script>
-    // Load orders from localStorage and display
-    window.addEventListener('DOMContentLoaded', () => {
-      const orders = JSON.parse(localStorage.getItem("orders")) || [];
-      const container = document.getElementById("orderList");
+  window.addEventListener('DOMContentLoaded', () => {
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const container = document.getElementById("orderList");
 
-      if (orders.length === 0) {
-        container.innerHTML = "<p style='text-align:center;'>No orders yet.</p>";
-      } else {
-        orders.forEach((order, index) => {
-          const orderCard = `
-            <div class="order-card">
-              <div class="order-header">
-                <span class="seller-name">🔥 Wella’s BBQ</span>
-                <span class="order-status ${order.status === 'READY FOR PICKUP' ? 'delivered' : ''}">${order.status}</span>
+    if (orders.length === 0) {
+      container.innerHTML = "<p style='text-align:center;'>No orders yet.</p>";
+    } else {
+      orders.forEach((order, index) => {
+        const orderCard = `
+          <div class="order-card">
+            <div class="order-header">
+              <span class="seller-name">🔥 Wella’s BBQ</span>
+              <span class="order-status ${order.status === 'READY FOR PICKUP' ? 'delivered' : ''}">${order.status}</span>
+            </div>
+            <div class="order-body">
+              <img src="image/${getImageFilename(order.product)}" alt="${order.product}" class="order-img">
+              <div class="order-details">
+                <p><strong>${order.product}</strong></p>
+                <p>Quantity: x${order.quantity}</p>
+                <p>Pickup Time: ${order.time}</p>
               </div>
-              <div class="order-body">
-                <img src="image/${getImageFilename(order.product)}" alt="${order.product}" class="order-img">
-                <div class="order-details">
-                  <p><strong>${order.product}</strong></p>
-                  <p>Quantity: x${order.quantity}</p>
-                  <p>Pickup Time: ${order.time}</p>
-                </div>
-                <div class="order-price">
-                  <p>Total: <strong>₱${order.total}</strong></p>
-                  ${order.status === "READY FOR PICKUP" ? `<button class="cancel-btn" onclick="cancelOrder(${index})">Cancel</button>` : ""}
-                </div>
+              <div class="order-price">
+                <p>Total: <strong>₱${order.total}</strong></p>
+                ${order.status === "READY FOR PICKUP" ? `<button class="cancel-btn" onclick="cancelOrder(${index})">Cancel</button>` : ""}
               </div>
             </div>
-          `;
-          container.innerHTML += orderCard;
-        });
-      }
-    });
+          </div>
+        `;
+        container.innerHTML += orderCard;
+      });
+    }
+  });
 
-    function getImageFilename(product) {
-      const map = {
-        "Chicken Pecho": "chicken_pecho.jpg",
-        "Chicken Paa": "chicken_paa.jpg",
-        "Pork Liempo": "pork_liempo.jpg"
-      };
-      return map[product] || "default_bbq.jpg";
+  function getImageFilename(product) {
+    const map = {
+      "Chicken Pecho": "chicken_pecho.jpg",
+      "Chicken Paa": "chicken_paa.jpg",
+      "Chicken Paa Meal": "chicken_paa.jpg",
+      "Pork Liempo": "pork_liempo.jpg"
+    };
+    return map[product] || "default_bbq.jpg";
+  }
+
+  function cancelOrder(index) {
+    if (!confirm("Are you sure you want to cancel this order?")) return;
+
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+    let cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
+    let allOrders = JSON.parse(localStorage.getItem("allOrders")) || [];
+
+    const cancelledOrder = orders.splice(index, 1)[0];
+    cancelledOrder.status = "CANCELLED";
+    cancelled.push(cancelledOrder);
+
+    // Update allOrders
+    const matchIndex = allOrders.findIndex(order =>
+      order.time === cancelledOrder.time &&
+      order.product === cancelledOrder.product &&
+      order.total === cancelledOrder.total
+    );
+    if (matchIndex !== -1) {
+      allOrders[matchIndex].status = "CANCELLED";
     }
 
-    function cancelOrder(index) {
-      if (!confirm("Are you sure you want to cancel this order?")) return;
-
-      let orders = JSON.parse(localStorage.getItem("orders")) || [];
-      let cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
-      let allOrders = JSON.parse(localStorage.getItem("allOrders")) || [];
-
-      const cancelledOrder = orders.splice(index, 1)[0];
-      cancelledOrder.status = "CANCELLED";
-      cancelled.push(cancelledOrder);
-
-      // Update allOrders too (based on unique values)
-      const matchIndex = allOrders.findIndex(order =>
-        order.time === cancelledOrder.time &&
-        order.product === cancelledOrder.product &&
-        order.total === cancelledOrder.total
-      );
-
-      if (matchIndex !== -1) {
-        allOrders[matchIndex].status = "CANCELLED";
-      }
-
-      localStorage.setItem("orders", JSON.stringify(orders));
-      localStorage.setItem("cancelledOrders", JSON.stringify(cancelled));
-      localStorage.setItem("allOrders", JSON.stringify(allOrders));
-
-      alert("Order has been cancelled.");
-      location.reload();
+    // Restore stockData
+    let stockData = JSON.parse(localStorage.getItem("stockData")) || [];
+    const stockItem = stockData.find(i => i.name === cancelledOrder.product);
+    if (stockItem) {
+      stockItem.stock += cancelledOrder.quantity;
+      localStorage.setItem("stockData", JSON.stringify(stockData));
     }
-  </script>
+
+    // Restore inventoryData
+    let inventoryData = JSON.parse(localStorage.getItem("inventoryData")) || [];
+    const inventoryItem = inventoryData.find(i => i.name === cancelledOrder.product);
+    if (inventoryItem) {
+      inventoryItem.quantity += cancelledOrder.quantity;
+      localStorage.setItem("inventoryData", JSON.stringify(inventoryData));
+    }
+
+    // Save all updates
+    localStorage.setItem("orders", JSON.stringify(orders));
+    localStorage.setItem("cancelledOrders", JSON.stringify(cancelled));
+    localStorage.setItem("allOrders", JSON.stringify(allOrders));
+
+    alert("Order has been cancelled and stock restored.");
+    location.reload();
+  }
+</script>
+
 </body>
 </html>

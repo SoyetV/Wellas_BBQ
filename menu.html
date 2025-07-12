@@ -35,16 +35,16 @@
       </div>
       <div class="modal-actions">
         <button class="cancel" onclick="closeModal()">Cancel</button>
-        <button onclick="confirmOrder()">🛒 Confirm Order</button>
+        <button onclick="confirmOrder()">Order</button>
       </div>
     </div>
   </div>
 
   <script>
     const menuItems = [
-      { id: 1, name: "Chicken Pecho", description: "BBQ chicken breast", price: 60 },
-      { id: 2, name: "Chicken Paa", description: "BBQ chicken leg", price: 60 },
-      { id: 3, name: "Pork Liempo", description: "Grilled pork belly", price: 80 },
+      { name: "Chicken Pecho", description: "BBQ chicken breast", price: 60 },
+      { name: "Chicken Paa", description: "BBQ chicken leg", price: 60 },
+      { name: "Pork Liempo", description: "Grilled pork belly", price: 80 }
     ];
 
     let selectedProduct = null;
@@ -87,9 +87,8 @@
 
     function openModal(product) {
       selectedProduct = product;
+      document.getElementById("modalTitle").textContent = `Order ${product}`;
       document.getElementById("orderModal").style.display = "flex";
-      document.getElementById("modalTitle").textContent = `Order: ${product}`;
-      document.getElementById("orderQuantity").value = 1;
     }
 
     function closeModal() {
@@ -99,46 +98,50 @@
     }
 
     function confirmOrder() {
-  const qty = parseInt(document.getElementById("orderQuantity").value);
-  if (!qty || qty < 1) return alert("Enter valid quantity.");
+      const qty = parseInt(document.getElementById("orderQuantity").value);
+      if (!qty || qty < 1) return alert("Enter a valid quantity.");
 
-  const stockData = JSON.parse(localStorage.getItem("stockData")) || [];
-  const item = stockData.find(i => i.name === selectedProduct);
+      const stockData = JSON.parse(localStorage.getItem("stockData")) || [];
+      const inventory = JSON.parse(localStorage.getItem("inventoryData")) || [];
 
-  if (!item || item.stock < qty) {
-    alert("Insufficient stock!");
-    return;
-  }
+      const stockItem = stockData.find(i => i.name === selectedProduct);
+      const invItem = inventory.find(i => i.name === selectedProduct);
+      const productItem = menuItems.find(i => i.name === selectedProduct);
 
-  // Deduct stock
-  item.stock -= qty;
-  localStorage.setItem("stockData", JSON.stringify(stockData));
+      if (!stockItem || stockItem.stock < qty) {
+        alert("Insufficient stock!");
+        return;
+      }
 
-  // Get price from menuItems
-  const menuItem = menuItems.find(i => i.name === selectedProduct);
+      // Deduct stock
+      stockItem.stock -= qty;
+      if (invItem) invItem.quantity = Math.max(0, invItem.quantity - qty);
 
-  const order = {
-    product: selectedProduct,
-    quantity: qty,
-    time: new Date().toLocaleTimeString(),
-    total: menuItem ? menuItem.price * qty : 0,
-    status: "READY FOR PICKUP"
-  };
+      localStorage.setItem("stockData", JSON.stringify(stockData));
+      localStorage.setItem("inventoryData", JSON.stringify(inventory));
 
-  const orders = JSON.parse(localStorage.getItem("orders")) || [];
-  const allOrders = JSON.parse(localStorage.getItem("allOrders")) || [];
+      const order = {
+        product: selectedProduct,
+        quantity: qty,
+        total: productItem.price * qty,
+        time: new Date().toISOString(),
+        price: productItem.price,
+        status: "READY FOR PICKUP"
+      };
 
-  orders.push(order);
-  allOrders.push(order);
+      const orders = JSON.parse(localStorage.getItem("orders")) || [];
+      const allOrders = JSON.parse(localStorage.getItem("allOrders")) || [];
 
-  localStorage.setItem("orders", JSON.stringify(orders));
-  localStorage.setItem("allOrders", JSON.stringify(allOrders));
+      orders.push(order);
+      allOrders.push(order);
 
-  alert("Order placed!");
-  closeModal();
-  renderMenu();
-}
+      localStorage.setItem("orders", JSON.stringify(orders));
+      localStorage.setItem("allOrders", JSON.stringify(allOrders));
 
+      alert("Order placed!");
+      closeModal();
+      renderMenu();
+    }
 
     window.addEventListener("DOMContentLoaded", renderMenu);
   </script>
