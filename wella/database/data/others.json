@@ -1,0 +1,30 @@
+[
+    {
+        "ID": "14",
+        "Name": "Puso",
+        "Price": "10",
+        "Type": "Others",
+        "Img_Dir": "Puso.png"
+    },
+    {
+        "ID": "15",
+        "Name": "Mineral Water",
+        "Price": "20",
+        "Type": "Others",
+        "Img_Dir": "MineralWater.png"
+    },
+    {
+        "ID": "16",
+        "Name": "Soft Drinks(8 oz)",
+        "Price": "20",
+        "Type": "Others",
+        "Img_Dir": "SoftDrinks8.png"
+    },
+    {
+        "ID": "34",
+        "Name": "Cucumber Lemonade",
+        "Price": "100",
+        "Type": "Others",
+        "Img_Dir": "Lemonade.png"
+    }
+]

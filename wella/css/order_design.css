@@ -1,0 +1,178 @@
+    * {
+        color: white;
+    }
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background: transparent;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-top: red solid 15px;
+    }
+
+    .pickup-order {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: white;
+        color: black;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .pickup-order h1 {
+        font-weight: 800;
+        font-size: 40px;
+        margin-bottom: 20px;
+    }
+
+    .pickup-order p {
+        color: black;
+        font-weight: 600;
+        font-size: 20px;
+        margin: 5px 0;
+    }
+
+    #item-container {
+        margin-top: 20px;
+        padding-inline: 10px;
+        background-color: rgb(215, 215, 215);
+        box-shadow: inset 0px 0px 100px 10px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        overflow: auto;
+        height: 50vh;
+        max-height: 400px;
+    }
+
+    .order-item{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: white;
+        padding: 10px;
+        border-radius: 8px;
+        margin: 10px 0;
+        box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.2);
+        position: relative;
+    }
+    .order-item.completed {
+        background-color: #f1f1f1;
+        opacity: 0.95;
+    }   
+    .order-item .order-product-img {
+        width: 100px;
+        height: 100px;
+        top: 0;
+        bottom: 0;
+    }
+
+    .order-item .details {
+        flex-grow: 1;
+        margin-left: 15px;
+    }
+
+    .order-item .details h2 {
+        color: black;
+        font-size: 20px;
+        margin: 0;
+        font-weight: 700;
+    }
+
+    .order-item .details h3 {
+        color: black;
+        font-size: 20px;
+        margin: 0;
+        margin-top: 5px;
+        font-weight: 500;
+    }
+
+    .order-item .details p {
+        color: black;
+        font-size: 20px;
+        margin: 5px 0;
+        font-weight: 500;
+    }
+
+    .order-item #editButton {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 800;
+        font-size: 20px;
+        padding: 7px 20px;
+        color: white;
+        border-radius: 50px;
+        background-color: rgb(246, 17, 17);
+        border: rgb(246, 17, 17) solid 3px;
+        margin-right: 10px;
+    }
+
+    .total {
+        text-align: left;
+        border-top: 1px solid #999;
+        padding-top: 10px;
+        margin-top: 20px;
+    }
+
+    .total span {
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    .order-button-container {
+        margin-top: 20px;
+        width: 100%;
+        display: flex;
+        gap: 10px;
+    }
+
+    #place-order {
+        width: 100%;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: white;
+        font-size: 20px;
+        font-weight: 800;
+        background-color: #aaa;
+        padding: 15px 20px;
+        border: #aaa solid 3px;
+        border-radius: 50px;
+        transition: all 0.15s ease-in-out;
+        cursor: default;
+    }
+
+    #cancel-order {
+        margin-top: 10px;
+        filter: grayscale(1) brightness(300%);
+        height: 45px;
+    }
+
+    @media all and (min-width: 1200px) {
+        .order-item #editButton:hover {
+            color:  rgb(246, 17, 17);
+            background-color: white;
+        }
+    }
+
+    @media all and (max-width: 1200px) {
+        .pickup-order h1 {
+            font-size: 35px;
+        }
+        .order-item .order-product-img {
+            width: 50px;
+            height: 50px;
+        }
+        .order-item #editButton {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            padding: 2px 15px;
+            position: absolute;
+            right: 5px;
+            bottom: 15px;
+        }
+        .order-item #editButton:active {
+            color: rgb(246, 17, 17);
+            background-color: white;
+        }
+        .total span {
+            font-size: 20px;
+        }
+    }

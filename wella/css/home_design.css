@@ -1,0 +1,248 @@
+
+* {
+    color: white;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: transparent;
+}
+
+
+.homeContainer {
+    position: relative;
+    z-index: 1;
+    padding: 48px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: transparent;
+}
+
+.content, .about-content {
+    display: flex;
+    flex-direction: row;
+    max-width: 1200px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-inline: auto;
+    border-top: red solid 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2),
+                0 6px 20px rgba(0, 0, 0, 0.19);
+}
+.empty-box {
+    flex: 1;
+    min-width: 600px;
+    min-height: 570px; 
+    background-image: url("../images/Photos/Wella.png");
+    background-position: center left;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0%;
+}
+.text-box {
+     flex: 1;
+    padding: 40px;
+    text-align: center;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0%;
+}
+.text-box h1 {
+    font-size: 125px;
+    font-weight: bold;
+    margin-top: 45px;
+}
+.text-box h2 {
+    font-size: 40px;
+    font-weight: normal;
+    margin-top: -25px;
+}
+.text-box p {
+    font-size: 25px;
+    margin-top: 50px;
+}
+.text-box button {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 750;
+    font-size: 18px;
+    padding: 13px 20px;
+    background-color: rgb(248, 17, 17);
+    color: white;
+    border: rgb(248, 17, 17) solid 3px;
+    margin-top: 16px;
+    margin-bottom: 45px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+.text-box button:hover {
+    background-color: white;
+    color: rgb(135, 15, 15);
+}
+.about-section h2 {
+    font-weight: 800;
+    font-size: 50px;
+    margin-top: 60px;
+}
+@media all and (min-width: 1200px) {
+    .content, .about-content {
+        flex-direction: row;
+        align-items: center;
+    }
+    .text-box {
+        margin-top: 0;
+        margin-left: 24px;
+    }
+}
+@media all and (max-width: 1200px) {
+    .content, .about-content {
+        background-image: none;
+        background-color: white;
+        max-width: 400px;
+    }
+    .empty-box {
+        display: none;
+    }
+    .text-box {
+        min-height: 450px;
+        margin-top: -40px;
+        width: 100%;
+        padding-inline: 50px;
+    }
+    .text-box h1 {
+        font-size: 80px;
+        margin-top: 70px;
+        margin-bottom: 90px;
+    }
+    .text-box h2 {
+        margin-top: -100px;
+        font-size: 23px;
+    }
+    .about-section h2 {
+        font-size: 30px;
+        margin-top: 90px;
+    }
+    .text-box p {
+        font-size: 15px;
+    }
+    .text-box button {
+        margin-bottom: 50px;
+    }
+}
+
+.welcomeHeader {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    margin-inline: auto;
+    width: max-content;
+    padding-inline: 100px;
+    padding-top: 72px;
+    padding-bottom: 100px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+.welcomeHeader h1 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 750;
+    font-size: 130px;
+    margin-bottom: -30px;
+}
+.welcomeHeader h2 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    font-size: 60px;
+    margin-bottom: 60px;
+}
+.welcomeHeader button {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    font-size: 25px;
+    font-weight: 800;
+    background-color: red;
+    padding: 15px 20px;
+    border: red solid 3px;
+    border-radius: 50px;
+    transition: scale 0.15s ease-in-out;
+}
+.welcomeHeader button:hover {
+    background-color: rgba(0, 0, 0, 0);
+    border-color: red;
+    color: red;
+    cursor: pointer;
+}
+.welcomeHeader button:active {
+    scale: 0.97;
+}
+@media all and (max-width: 1200px) {
+    .homeContainer {
+        background-size: 100px;
+    }
+    .welcomeHeader {
+        padding-inline: 20px;
+    }
+    .welcomeHeader h1 {
+        font-size: 50px;
+        margin-bottom: -20px;
+    }
+    .welcomeHeader h2 {
+        font-size: 30px;
+    }
+    .welcomeHeader button {
+        font-size: 20px;
+    }
+}
+
+.careerSection {
+    padding-top: 100px;
+    padding-bottom: 100px;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.careerSection h1 {
+    font-weight: 800;
+    font-size: 60px;
+    margin-bottom: 40px;
+}
+.careerSection img {
+    border-radius: 25px;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.careerSection p {
+    font-size: 30px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.careerSection button {
+    font-weight: 800;
+    font-size: 25px;
+    color: white;
+    background-color: red;
+    border: red solid 3px;
+    padding: 15px 40px;
+    border-radius: 50px;
+}
+.careerSection a button:hover, button:active {
+    background-color: white;
+    color: red;
+}
+@media all and (max-width: 1200px) {
+    .careerSection h1 {
+        font-size: 35px;
+    }
+    .careerSection p {
+        font-size: 25px;
+    }
+    .careerSection button {
+        font-size: 20px;
+    }
+}
