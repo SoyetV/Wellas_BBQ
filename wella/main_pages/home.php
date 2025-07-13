@@ -79,8 +79,6 @@
                 </div>
             </div>
 
-            <!-- About section can be added here -->
-
         </div>
     </div>
 
