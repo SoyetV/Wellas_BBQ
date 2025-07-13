@@ -1,0 +1,180 @@
+
+#backgroundVideo {
+    position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+            z-index: -1;
+}
+
+
+.menuContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    padding-top: 20px;
+}
+.container_menu {
+    display: flex;
+    margin-inline: auto;
+    max-width: 2000px;
+    border-radius: 16px;
+    position: relative;
+    padding: 16px;
+}
+
+.main-content {
+    position: relative;
+    width: 75%;
+    height: 100%;
+    overflow: auto;
+    padding: 25px 0;
+    z-index: 2;
+}
+
+
+#itemContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    padding-inline: 15px;
+}
+
+@media all and (max-width: 1200px) {
+    .container_menu {
+        display: block !important;
+    }
+    .main-content {
+        width: 100% !important;
+        padding: 30px 0;
+    }
+    #itemContainer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: -15px;
+    }
+}
+
+.item {
+    background-color: rgba(29, 27, 27, 0.75);
+    color: white;
+    padding: 40px;
+    border-radius: 25px;
+    height: 460px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4), 0 6px 20px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.item img {
+    width: 192px;
+    height: 192px;
+    object-fit: cover;
+    margin: 0 auto 16px;
+    border-radius: 10px;
+    filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.5));
+}
+
+
+.item .name {
+    margin-top: 16px;
+    font-size: 25px;
+    font-weight: 800;
+    color: white;
+}
+.item .price {
+    font-size: 23px;
+    font-weight: 450;
+    color: white;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+}
+
+.item .itemButton {
+    padding: 10px 16px;
+    border: rgb(248, 17, 17) solid 3px;
+    background-color: rgb(248, 17, 17);
+    color: white;
+    border-radius: 999px;
+    position: absolute;
+    left: 13%;
+    right: 13%;
+    bottom: 30px;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+}
+.item .itemButton:hover {
+    background-color: white;
+    color: rgb(248, 17, 17);
+}
+.item .deleteButton {
+    z-index: 100;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-image: url("../images/Icons/CloseMoreIcon.png");
+    background-position: center;
+    background-size: cover;
+    border: none;
+    cursor: pointer;
+}
+
+#addNewButton {
+    z-index: 999;
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 5px solid rgb(255, 102, 0);
+    background-color: white;
+    cursor: pointer;
+    transition: transform 0.12s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 6px 20px rgba(0,0,0,0.19);
+}
+#addNewButton:hover {
+    transform: scale(1.2);
+}
+
+/* 📱 Responsive */
+@media all and (min-width: 1400px) {
+    #itemContainer {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+@media all and (max-width: 1200px) {
+    footer {
+        display: none !important;
+    }
+    .item {
+        width: 300px;
+    }
+    .item .name {
+        font-size: 20px;
+    }
+    #addNewButton {
+        transform: scale(0.8);
+        bottom: 20px;
+        right: 10px;
+    }
+    #addNewButton:hover {
+        transform: scale(1);
+    }
+}
+@media all and (max-width: 1400px) {
+    .container_menu {
+        position: static;
+    }
+}

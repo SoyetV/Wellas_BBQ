@@ -1,0 +1,226 @@
+#MainContent {
+    padding-inline: 5px;
+}
+#bgVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+    object-fit: cover;
+    filter: brightness(0.4);
+}
+#order-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    padding-inline: 80px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    display: flex;
+    gap: 30px;
+}
+#img-container #product-img {
+    height: 200px;
+    width: 200px;
+    max-height: 200px;
+    max-width: 200px;
+    border-radius: 10px;
+    filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.5));
+}
+#form-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 10px 0;
+    width: 100%;
+}
+#back-button {
+    position: absolute;
+    width: 50px;
+    transform: translate(-300px, -15px);
+    cursor: pointer;
+}
+#form-container h1 {
+    font-weight: 700;
+}
+.quantity-container {
+    margin-top: 10px;
+    border-radius: 10px;
+    background-color:  rgb(248, 17, 17);
+    width: fit-content;
+    border:  rgb(248, 17, 17) solid 4px;
+}
+.quantity-container button {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    border: none;
+    background-color:  rgb(248, 17, 17);
+    border-radius: 50px;
+    color: white;
+    width: 50px;
+    transition: background-color 0.1s ease-in-out;
+}
+.quantity-container button:active {
+    background-color: rgb(248, 17, 17);
+}
+.quantity-container input {
+    border: rgb(248, 17, 17) solid 2px;
+    text-align: center;
+    width: 50px;
+    transform: translateY(-2px);
+}
+.quantity-container input::-webkit-outer-spin-button,
+.quantity-container input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+#form-container textarea {
+    padding: 5px;
+    margin-top: 10px;
+    resize: none;
+    width: 100%;
+    height: 200px;
+    max-height: 200px;
+    transition: all 0.2s ease-in-out;
+}
+#req-dropdown {
+    width: 25px;
+    height: 25px;
+    rotate: 0deg;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+#req-more-info {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+#req-more-info-p {
+    position: absolute;
+    background-color: rgb(189, 189, 189);
+    font-size: 15px;
+    padding: 6px 15px;
+    color: black;
+    width: 240px;
+    max-width: 250px;
+    border-radius: 20px;
+    transform: translate(300px, -15px);
+}
+#req-more-info-p .triangle-down {
+    position: absolute;
+    transform: translate(-30px, -56px);
+	width: 0;
+	height: 0;
+    border-right: 16px solid rgb(189, 189, 189);
+	border-top: 14px solid transparent;
+	border-bottom: 14px solid transparent;
+}
+#form-container label {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+}
+#form-container [type=submit] {
+    margin-top: 10px;
+}
+#submit-order {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: white;
+    border: rgb(248, 17, 17) solid 3px;
+    background-color: rgb(248, 17, 17);
+    border-radius: 50px;
+    transition: all 0.1s ease-in-out;
+}
+#submit-order:hover {
+    color: rgb(248, 17, 17);
+    background-color: white;
+}
+
+#buttons-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+#buttons-container #delete-button {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: white;
+    border: rgb(248, 17, 17) solid 3px;
+    background-color: rgb(248, 17, 17);
+    border-radius: 50px;
+    transition: all 0.1s ease-in-out;
+}
+#buttons-container #submit-order {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: white;
+    border: rgb(10, 195, 0) solid 3px;
+    background-color: rgb(10, 195, 0);
+    border-radius: 50px;
+    margin-top: -1px;
+    transition: all 0.1s ease-in-out;
+}
+#buttons-container #submit-order:hover {
+    color: rgb(10, 195, 0);
+    background-color: white;
+}
+
+@media all and (min-width: 1200px) {
+    #buttons-container #delete-button:hover {
+        color: rgb(248, 17, 17);
+        background-color: white;
+    }
+}
+
+@media all and (max-width: 1200px) {
+    #order-container {
+        display: block;
+        padding-inline: 20px;
+    }
+    #form-container {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 10px;
+    }
+    #img-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    #req-more-info-p {
+        font-size: 10px;
+        padding: 5px;
+        color: black;
+        width: 100px;
+        border-radius: 10px;
+        max-width: 120px;
+        transform: translate(198px, -110px);
+    }
+    #req-more-info-p .triangle-down {
+        position: absolute;
+        transform: translate(50px, 0px);
+        width: 0;
+        height: 0;
+        border-left: 14px solid transparent;
+        border-right: 14px solid transparent;
+        border-top: 16px solid rgb(189, 189, 189);
+    }
+    #back-button {
+        width: 30px;
+        transform: translate(-15px, -215px);
+    }
+}
