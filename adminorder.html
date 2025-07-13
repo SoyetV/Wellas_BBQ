@@ -5,60 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Customer Orders - Wella's BBQ</title>
   <link rel="stylesheet" href="adminorder.css" />
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const orders = JSON.parse(localStorage.getItem("orders")) || [];
-      const completed = JSON.parse(localStorage.getItem("completedOrders")) || [];
-      const cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
-
-      const tableBody = document.getElementById("ordersTableBody");
-      tableBody.innerHTML = "";
-
-      orders.forEach((order, index) => {
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
-          <td>${1001 + index}</td>
-          <td>Guest Customer</td>
-          <td>${order.product} x${order.quantity}</td>
-          <td>₱${order.total.toFixed(2)}</td>
-          <td>${order.status}</td>
-          <td>
-            <button class="btn view-btn" onclick="alert('Product: ${order.product}\nQty: ${order.quantity}\nTime: ${order.time}')">View</button>
-            <button class="btn complete-btn" onclick="markComplete(${index})">Mark Complete</button>
-            <button class="btn cancel-btn" onclick="cancelOrder(${index})">Cancel</button>
-          </td>
-        `;
-
-        tableBody.appendChild(row);
-      });
-    });
-
-    function markComplete(index) {
-      let orders = JSON.parse(localStorage.getItem("orders")) || [];
-      let completed = JSON.parse(localStorage.getItem("completedOrders")) || [];
-      const completedOrder = orders.splice(index, 1)[0];
-      completedOrder.status = "COMPLETED";
-      completed.push(completedOrder);
-
-      localStorage.setItem("orders", JSON.stringify(orders));
-      localStorage.setItem("completedOrders", JSON.stringify(completed));
-      location.reload();
-    }
-
-    function cancelOrder(index) {
-      if (!confirm("Are you sure you want to cancel this order?")) return;
-      let orders = JSON.parse(localStorage.getItem("orders")) || [];
-      let cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
-      const cancelledOrder = orders.splice(index, 1)[0];
-      cancelledOrder.status = "CANCELLED";
-      cancelled.push(cancelledOrder);
-
-      localStorage.setItem("orders", JSON.stringify(orders));
-      localStorage.setItem("cancelledOrders", JSON.stringify(cancelled));
-      location.reload();
-    }
-  </script>
 </head>
 <body>
   <!-- Sidebar -->
@@ -90,32 +36,44 @@
             <th>Items</th>
             <th>Total</th>
             <th>Status</th>
+            <th>Time</th>
             <th>Actions</th>
           </tr>
         </thead>
-       <tbody id="orderTableBody">
-  <!-- JS will populate rows here -->
-</tbody>
-
+        <tbody id="orderTableBody">
+          <!-- Orders will be populated here -->
+        </tbody>
       </table>
     </section>
   </div>
-  <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const orders = JSON.parse(localStorage.getItem("orders")) || [];
-    const tableBody = document.getElementById("orderTableBody");
 
-    if (orders.length === 0) {
-      tableBody.innerHTML = "<tr><td colspan='6'>No orders yet.</td></tr>";
-    } else {
-      orders.forEach((order, index) => {
+  <script>
+    function renderOrders() {
+      const allOrders = JSON.parse(localStorage.getItem("allOrders")) || [];
+      const tableBody = document.getElementById("orderTableBody");
+      tableBody.innerHTML = "";
+
+      if (allOrders.length === 0) {
+        tableBody.innerHTML = "<tr><td colspan='7'>No orders found.</td></tr>";
+        return;
+      }
+
+      allOrders.forEach((order, index) => {
+        const formattedTime = new Date(order.time).toLocaleString("en-PH", {
+          dateStyle: "medium",
+          timeStyle: "short"
+        });
+
+        const customerName = order.customerName || "Guest";
+
         const row = `
           <tr>
             <td>ORD-${1000 + index}</td>
-            <td>Guest</td>
+            <td>${customerName}</td>
             <td>${order.product} x${order.quantity}</td>
             <td>₱${order.total}</td>
             <td>${order.status}</td>
+            <td>${formattedTime}</td>
             <td>
               <button class="btn view-btn" onclick="viewOrder(${index})">View</button>
               <button class="btn complete-btn" onclick="markComplete(${index})">Mark Complete</button>
@@ -126,42 +84,62 @@
         tableBody.innerHTML += row;
       });
     }
-  });
 
-  function markComplete(index) {
-    const orders = JSON.parse(localStorage.getItem("orders")) || [];
-    const completed = JSON.parse(localStorage.getItem("completedOrders")) || [];
+    function markComplete(index) {
+      let allOrders = JSON.parse(localStorage.getItem("allOrders")) || [];
+      let orders = JSON.parse(localStorage.getItem("orders")) || [];
+      let completed = JSON.parse(localStorage.getItem("completedOrders")) || [];
 
-    const order = orders.splice(index, 1)[0];
-    order.status = "COMPLETED";
-    completed.push(order);
+      const completedOrder = allOrders[index];
+      completedOrder.status = "COMPLETED";
 
-    localStorage.setItem("orders", JSON.stringify(orders));
-    localStorage.setItem("completedOrders", JSON.stringify(completed));
-    alert("Order marked as completed.");
-    location.reload();
-  }
+      // Remove from 'orders' if present
+      orders = orders.filter(o =>
+        !(o.product === completedOrder.product &&
+          o.quantity === completedOrder.quantity &&
+          o.time === completedOrder.time)
+      );
 
-  function cancelOrder(index) {
-    if (!confirm("Cancel this order?")) return;
+      completed.push(completedOrder);
+      localStorage.setItem("orders", JSON.stringify(orders));
+      localStorage.setItem("completedOrders", JSON.stringify(completed));
+      localStorage.setItem("allOrders", JSON.stringify(allOrders));
+      alert("Order marked as completed.");
+      renderOrders();
+    }
 
-    const orders = JSON.parse(localStorage.getItem("orders")) || [];
-    const cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
+    function cancelOrder(index) {
+      if (!confirm("Cancel this order?")) return;
 
-    const order = orders.splice(index, 1)[0];
-    order.status = "CANCELLED";
-    cancelled.push(order);
+      let allOrders = JSON.parse(localStorage.getItem("allOrders")) || [];
+      let orders = JSON.parse(localStorage.getItem("orders")) || [];
+      let cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
 
-    localStorage.setItem("orders", JSON.stringify(orders));
-    localStorage.setItem("cancelledOrders", JSON.stringify(cancelled));
-    alert("Order has been cancelled.");
-    location.reload();
-  }
+      const cancelledOrder = allOrders[index];
+      cancelledOrder.status = "CANCELLED";
 
-  function viewOrder(index) {
-    alert(`Viewing Order #${1000 + index}`);
-  }
-</script>
+      // Remove from 'orders' if present
+      orders = orders.filter(o =>
+        !(o.product === cancelledOrder.product &&
+          o.quantity === cancelledOrder.quantity &&
+          o.time === cancelledOrder.time)
+      );
 
+      cancelled.push(cancelledOrder);
+      localStorage.setItem("orders", JSON.stringify(orders));
+      localStorage.setItem("cancelledOrders", JSON.stringify(cancelled));
+      localStorage.setItem("allOrders", JSON.stringify(allOrders));
+      alert("Order cancelled.");
+      renderOrders();
+    }
+
+    function viewOrder(index) {
+      const allOrders = JSON.parse(localStorage.getItem("allOrders")) || [];
+      const order = allOrders[index];
+      alert(`Product: ${order.product}\nQuantity: ${order.quantity}\nCustomer: ${order.customerName || "Guest"}\nStatus: ${order.status}\nTotal: ₱${order.total}`);
+    }
+
+    window.addEventListener("DOMContentLoaded", renderOrders);
+  </script>
 </body>
 </html>

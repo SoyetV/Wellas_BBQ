@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Profile - Wella’s BBQ</title>
+  <link rel="stylesheet" href="userprofile.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <h1>Wella’s BBQ</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="user.html">Orders</a></li>
+        <li><a href="userprofile.html" class="active">Profile</a></li>
+        <li><a href="#">Settings</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Container -->
+  <div class="profile-container">
+    
+    <!-- Sidebar -->
+    <aside class="profile-sidebar">
+      <div class="user-info">
+        <img src="image/user.png" alt="User Icon" class="profile-pic" />
+        <h3 id="sidebar-name">User</h3>
+        <p id="sidebar-email">user@example.com</p>
+      </div>
+      <ul class="sidebar-links">
+        <li><a href="user.html">My Orders</a></li>
+        <li><a href="userprofile.html" class="active">Profile</a></li>
+        <li><a href="#">Settings</a></li>
+        <li><a href="#" onclick="logout()">Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Profile Form -->
+    <main class="profile-main">
+      <h2>My Profile</h2>
+      <form class="profile-form" onsubmit="saveProfile(event)">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" required />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" />
+        </div>
+        <div class="form-group">
+          <label for="address">Delivery Address</label>
+          <textarea id="address" rows="3"></textarea>
+        </div>
+        <button type="submit" class="save-btn">Save Changes</button>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    // Check login
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) {
+      alert("Please log in first.");
+      window.location.href = "index.html";
+    }
+
+    // Display current info
+    document.getElementById("sidebar-name").textContent = user.name;
+    document.getElementById("sidebar-email").textContent = user.email;
+
+    document.getElementById("name").value = user.name || "";
+    document.getElementById("email").value = user.email || "";
+    document.getElementById("phone").value = user.phone || "";
+    document.getElementById("address").value = user.address || "";
+
+    // Save profile
+    function saveProfile(e) {
+      e.preventDefault();
+      const updatedUser = {
+        ...user,
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        address: document.getElementById("address").value,
+      };
+      localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
+      alert("Profile updated!");
+      location.reload();
+    }
+
+    function logout() {
+    if (confirm("Are you sure you want to logout?")) {
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("accountType"); // Optional, if you use this elsewhere
+    localStorage.removeItem("isLoggedIn");
+    window.location.href = "index.html";
+  }
+}
+
+  </script>
+</body>
+</html>

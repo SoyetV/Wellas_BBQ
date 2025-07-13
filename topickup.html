@@ -6,7 +6,6 @@
   <title>To Pickup - Wella’s BBQ</title>
   <link rel="stylesheet" href="topickup.css" />
   <style>
-    /* Optional styling enhancement specific for pickup */
     .order-status.ready {
       background-color: orange;
       padding: 4px 10px;
@@ -17,9 +16,7 @@
     }
   </style>
 </head>
-
 <body>
-  <!-- Header -->
   <header>
     <div class="logo">
       <h1>Wella’s BBQ</h1>
@@ -28,101 +25,102 @@
       <ul>
         <li><a href="menu.html">Menu</a></li>
         <li><a href="user.html" class="active">Orders</a></li>
-        <li><a href="profile.html">Profile</a></li>
-        <li><a href="#">Settings</a></li>
+        <li><a href="userprofile.html">Profile</a></li>
       </ul>
     </nav>
   </header>
 
-  <!-- Main Section -->
   <main class="orders-container">
     <h2>Orders Ready for Pickup</h2>
-
     <div class="order-status-tabs">
-  <a href="user.html" class="tab">All</a>
-  <a href="topickup.html" class="tab active">To Pickup</a>
-  <a href="completed.html" class="tab">Completed</a>
-  <a href="cancelled.html" class="tab">Cancelled</a>
-</div>
+      <a href="user.html" class="tab">All</a>
+      <a href="topickup.html" class="tab active">To Pickup</a>
+      <a href="completed.html" class="tab">Completed</a>
+      <a href="cancelled.html" class="tab">Cancelled</a>
+    </div>
 
-    <!-- Orders container -->
     <div id="pickupList"></div>
-
   </main>
 
   <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const orders = JSON.parse(localStorage.getItem("orders")) || [];
-    const container = document.getElementById("pickupList");
-
-    const pickupOrders = orders.filter(order => order.status === "READY FOR PICKUP");
-
-    if (pickupOrders.length === 0) {
-      container.innerHTML = "<p style='text-align:center;'>No orders ready for pickup.</p>";
-    } else {
-      pickupOrders.forEach((order, index) => {
-        const card = `
-          <div class="order-card">
-            <div class="order-header">
-              <span class="seller-name">🔥 Wella’s BBQ</span>
-              <span class="order-status delivered">${order.status}</span>
-            </div>
-            <div class="order-body">
-              <img src="image/${getImageFilename(order.product)}" alt="${order.product}" class="order-img">
-              <div class="order-details">
-                <p><strong>${order.product}</strong></p>
-                <p>Quantity: x${order.quantity}</p>
-                <p>Pickup Time: ${order.time}</p>
-              </div>
-              <div class="order-price">
-                <p>Total: <strong>₱${order.total}</strong></p>
-                <button class="mark-btn" onclick="markAsCompleted(${index})">Mark as Completed</button>
-              </div>
-            </div>
-          </div>
-        `;
-        container.innerHTML += card;
-      });
-    }
-  });
-
-  function getImageFilename(product) {
-    const map = {
-      "Chicken Pecho": "chicken_pecho.jpg",
-      "Chicken Paa": "chicken_paa.jpg",
-      "Pork Liempo": "pork_liempo.jpg"
-    };
-    return map[product] || "default_bbq.jpg";
-  }
-
-  function markAsCompleted(indexInFiltered) {
-    let allOrders = JSON.parse(localStorage.getItem("orders")) || [];
-    let completedOrders = JSON.parse(localStorage.getItem("completedOrders")) || [];
-
-    const pickupOrders = allOrders.filter(order => order.status === "READY FOR PICKUP");
-
-    const completedOrder = pickupOrders[indexInFiltered];
-    completedOrder.status = "COMPLETED";
-
-    // Remove from original allOrders
-    const originalIndex = allOrders.findIndex(o =>
-      o.product === completedOrder.product &&
-      o.quantity === completedOrder.quantity &&
-      o.time === completedOrder.time
-    );
-    if (originalIndex !== -1) {
-      allOrders.splice(originalIndex, 1);
+    function getImageFilename(product) {
+      const map = {
+        "Chicken Pecho": "chicken_pecho.jpg",
+        "Chicken Paa": "chicken_paa.jpg",
+        "Pork Liempo": "pork_liempo.jpg"
+      };
+      return map[product] || "default_bbq.jpg";
     }
 
-    completedOrders.push(completedOrder);
+    window.addEventListener('DOMContentLoaded', () => {
+      const orders = JSON.parse(localStorage.getItem("orders")) || [];
+      const container = document.getElementById("pickupList");
 
-    localStorage.setItem("orders", JSON.stringify(allOrders));
-    localStorage.setItem("completedOrders", JSON.stringify(completedOrders));
+      const pickupOrders = orders.filter(order => order.status === "READY FOR PICKUP");
 
-    alert("Order marked as completed.");
-    location.reload();
-  }
-</script>
+      if (pickupOrders.length === 0) {
+        container.innerHTML = "<p style='text-align:center;'>No orders ready for pickup.</p>";
+      } else {
+        pickupOrders.forEach((order, index) => {
+          const card = `
+            <div class="order-card">
+              <div class="order-header">
+                <span class="seller-name">🔥 Wella’s BBQ</span>
+                <span class="order-status ready">${order.status}</span>
+              </div>
+              <div class="order-body">
+                <img src="image/${getImageFilename(order.product)}" alt="${order.product}" class="order-img">
+                <div class="order-details">
+                  <p><strong>${order.product}</strong></p>
+                  <p>Quantity: x${order.quantity}</p>
+                  <p>Pickup Time: ${new Date(order.time).toLocaleString()}</p>
+                </div>
+                <div class="order-price">
+                  <p>Total: <strong>₱${order.total}</strong></p>
+                  <button class="mark-btn" onclick="markAsCompleted(${index})">Mark as Completed</button>
+                </div>
+              </div>
+            </div>
+          `;
+          container.innerHTML += card;
+        });
+      }
+    });
 
+    function markAsCompleted(indexInFiltered) {
+      let allOrders = JSON.parse(localStorage.getItem("allOrders")) || [];
+      let orders = JSON.parse(localStorage.getItem("orders")) || [];
+      let completedOrders = JSON.parse(localStorage.getItem("completedOrders")) || [];
+
+      const pickupOrders = orders.filter(order => order.status === "READY FOR PICKUP");
+      const completedOrder = pickupOrders[indexInFiltered];
+      completedOrder.status = "COMPLETED";
+
+      // Remove from orders
+      orders = orders.filter(o =>
+        !(o.product === completedOrder.product &&
+          o.quantity === completedOrder.quantity &&
+          o.time === completedOrder.time)
+      );
+
+      // Update in allOrders
+      allOrders = allOrders.map(o =>
+        o.product === completedOrder.product &&
+        o.quantity === completedOrder.quantity &&
+        o.time === completedOrder.time
+          ? { ...o, status: "COMPLETED" }
+          : o
+      );
+
+      completedOrders.push(completedOrder);
+
+      localStorage.setItem("orders", JSON.stringify(orders));
+      localStorage.setItem("allOrders", JSON.stringify(allOrders));
+      localStorage.setItem("completedOrders", JSON.stringify(completedOrders));
+
+      alert("Order marked as completed.");
+      location.reload();
+    }
+  </script>
 </body>
 </html>

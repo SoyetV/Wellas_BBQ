@@ -103,6 +103,8 @@
 
       const stockData = JSON.parse(localStorage.getItem("stockData")) || [];
       const inventory = JSON.parse(localStorage.getItem("inventoryData")) || [];
+      const user = JSON.parse(localStorage.getItem("loggedInUser"));
+      const customerName = user ? user.name : "Guest";
 
       const stockItem = stockData.find(i => i.name === selectedProduct);
       const invItem = inventory.find(i => i.name === selectedProduct);
@@ -113,7 +115,6 @@
         return;
       }
 
-      // Deduct stock
       stockItem.stock -= qty;
       if (invItem) invItem.quantity = Math.max(0, invItem.quantity - qty);
 
@@ -126,6 +127,7 @@
         total: productItem.price * qty,
         time: new Date().toISOString(),
         price: productItem.price,
+        customerName: customerName,
         status: "READY FOR PICKUP"
       };
 

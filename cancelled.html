@@ -16,7 +16,7 @@
       <ul>
         <li><a href="menu.html">Menu</a></li>
         <li><a href="user.html" class="active">Orders</a></li>
-        <li><a href="profile.html">Profile</a></li>
+        <li><a href="userprofile.html">Profile</a></li>
         <li><a href="#">Settings</a></li>
       </ul>
     </nav>
@@ -57,6 +57,11 @@
       }
 
       cancelled.forEach((order, index) => {
+        const formattedTime = new Date(order.time).toLocaleString("en-PH", {
+          dateStyle: "medium",
+          timeStyle: "short"
+        });
+
         const card = `
           <div class="order-card">
             <div class="order-header">
@@ -68,7 +73,7 @@
               <div class="order-details">
                 <p><strong>${order.product}</strong></p>
                 <p>Quantity: x${order.quantity}</p>
-                <p>Cancelled On: ${order.time}</p>
+                <p>Cancelled On: ${formattedTime}</p>
               </div>
               <div class="order-price">
                 <p>Total: <strong>₱${order.total}</strong></p>
@@ -85,15 +90,22 @@
     function reorder(index) {
       let cancelled = JSON.parse(localStorage.getItem("cancelledOrders")) || [];
       let orders = JSON.parse(localStorage.getItem("orders")) || [];
+      let allOrders = JSON.parse(localStorage.getItem("allOrders")) || [];
 
-      const orderToReorder = cancelled.splice(index, 1)[0];
+      const orderToReorder = { ...cancelled[index] };
       orderToReorder.status = "READY FOR PICKUP";
-      orderToReorder.time = new Date().toLocaleString();
+      orderToReorder.time = new Date().toISOString();
 
+      // Add to orders and allOrders
       orders.push(orderToReorder);
+      allOrders.push(orderToReorder);
+
+      // Remove from cancelledOrders
+      cancelled.splice(index, 1);
 
       localStorage.setItem("orders", JSON.stringify(orders));
       localStorage.setItem("cancelledOrders", JSON.stringify(cancelled));
+      localStorage.setItem("allOrders", JSON.stringify(allOrders));
 
       alert("Order moved back to My Orders.");
       loadCancelledOrders();

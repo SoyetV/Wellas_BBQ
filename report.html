@@ -62,9 +62,9 @@
     let daily = 0, weekly = 0, monthly = 0;
     let productCount = {};
 
-    const filteredOrders = allOrders.filter(o => o.status === "READY FOR PICKUP" && o.total);
+    const completedOrders = allOrders.filter(o => o.status === "COMPLETED");
 
-    filteredOrders.forEach(order => {
+    completedOrders.forEach(order => {
       const dt = new Date(order.time);
       const total = parseFloat(order.total) || 0;
 
@@ -75,9 +75,10 @@
       productCount[order.product] = (productCount[order.product] || 0) + order.quantity;
     });
 
-    const topProduct = Object.entries(productCount).sort((a,b) => b[1] - a[1])[0]?.[0] || "None";
+    const topProduct = Object.entries(productCount)
+      .sort((a,b) => b[1] - a[1])[0]?.[0] || "None";
 
-    // Fill sales cards
+    // Sales Cards
     document.getElementById("reportCards").innerHTML = `
       <div class="card"><h3>Daily Sales</h3><p>₱${daily.toFixed(2)}</p></div>
       <div class="card"><h3>Weekly Sales</h3><p>₱${weekly.toFixed(2)}</p></div>
@@ -85,21 +86,16 @@
       <div class="card"><h3>Top Item</h3><p>${topProduct}</p></div>
     `;
 
-    // Fill recent sales table (individual orders)
+    // Recent Sales Table
     const summaryTable = document.getElementById("summaryTable");
-    const recentOrders = filteredOrders
+    const recent = completedOrders
       .sort((a, b) => new Date(b.time) - new Date(a.time))
       .slice(0, 10);
 
-    recentOrders.forEach(order => {
-      const dateTime = new Date(order.time).toLocaleString('en-US', {
-        weekday: 'short',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true
+    recent.forEach(order => {
+      const dateTime = new Date(order.time).toLocaleString('en-PH', {
+        dateStyle: 'medium',
+        timeStyle: 'short'
       });
 
       summaryTable.innerHTML += `
@@ -112,20 +108,19 @@
       `;
     });
 
-    // Chart.js
+    // Chart: Daily Revenue
     const chartLabels = [];
     const chartData = [];
+    const dailyMap = {};
 
-    // Count by day
-    const dayMap = {};
-    filteredOrders.forEach(order => {
-      const dateKey = new Date(order.time).toLocaleDateString();
-      dayMap[dateKey] = (dayMap[dateKey] || 0) + (parseFloat(order.total) || 0);
+    completedOrders.forEach(order => {
+      const dateKey = new Date(order.time).toLocaleDateString('en-PH');
+      dailyMap[dateKey] = (dailyMap[dateKey] || 0) + (parseFloat(order.total) || 0);
     });
 
-    Object.keys(dayMap).sort((a, b) => new Date(a) - new Date(b)).forEach(key => {
-      chartLabels.push(key);
-      chartData.push(dayMap[key].toFixed(2));
+    Object.keys(dailyMap).sort((a, b) => new Date(a) - new Date(b)).forEach(date => {
+      chartLabels.push(date);
+      chartData.push(dailyMap[date].toFixed(2));
     });
 
     new Chart(document.getElementById("salesChart"), {
@@ -142,7 +137,14 @@
       options: {
         responsive: true,
         scales: {
-          y: { beginAtZero: true }
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return '₱' + value;
+              }
+            }
+          }
         }
       }
     });
