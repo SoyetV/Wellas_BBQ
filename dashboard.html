@@ -28,6 +28,9 @@
       <li><a href="customer.html">Customers</a></li>
       <li><a href="report.html">Reports</a></li>
       <li><a href="#">Settings</a></li>
+      <li><a href="#" onclick="logout()">Logout</a></li>
+
+
     </ul>
   </div>
 
@@ -77,6 +80,13 @@
   </div>
 
   <script>
+
+    function logout() {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("accountType");
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "index.html"; // Redirect back to homepage
+    }
     function loadDashboardData() {
       const orders = JSON.parse(localStorage.getItem("orders")) || [];
       const completed = JSON.parse(localStorage.getItem("completedOrders")) || [];

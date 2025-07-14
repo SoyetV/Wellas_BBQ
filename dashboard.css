@@ -143,6 +143,22 @@ tr:hover {
   background-color: #2b2b2b;
 }
 
+.logout-btn {
+  padding: 8px 16px;
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  float: right;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  background-color: #c9302c;
+}
+
+
 /* Fade-in Animation */
 @keyframes fadeInUp {
   from {
