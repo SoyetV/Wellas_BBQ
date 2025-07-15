@@ -56,7 +56,7 @@
                     filter: brightness(0.4);
                 }
                 * {
-                    color: white;
+                    color: black;
                 }
                 .container {
                     border-top: red solid 15px;
@@ -135,8 +135,8 @@
                 </div>
 
                 <div class="total">
-                    <span style="margin-top: 10px">QUANTITY: <?php echo $totalQty; ?></span><br />
-                    <span style="margin-top: 10px">TOTAL: ₱ <?php echo number_format($totalPrice, 2); ?></span>
+                    <span style="margin-top: 10px; color: white;">QUANTITY: <?php echo $totalQty; ?></span><br />
+                    <span style="margin-top: 10px; color: white;">TOTAL: ₱ <?php echo number_format($totalPrice, 2); ?></span>
                 </div>
             </div>
         </div>
