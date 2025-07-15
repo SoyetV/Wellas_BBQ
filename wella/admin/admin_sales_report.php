@@ -8,10 +8,29 @@ if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'Admin') {
 
 require_once("../database/wb_db_connect.php");
 
-$selectedMonth = isset($_GET['month']) ? $_GET['month'] : date('Y-m');
+$viewMode = 'monthly';
+$filterFormat = '';
+$filterValueStart = null;
+$filterValueEnd = null;
+$filterValue = null;
 
-$query = "
-    SELECT
+if (!empty($_GET['date'])) {
+    $viewMode = 'daily';
+    $filterFormat = '%Y-%m-%d';
+    $filterValue = $_GET['date'];
+} elseif (!empty($_GET['week'])) {
+    $viewMode = 'weekly';
+    $weekInput = $_GET['week'];
+    $weekStart = new DateTimeImmutable($weekInput);
+    $filterValueStart = $weekStart->format('Y-m-d');
+    $filterValueEnd = $weekStart->modify('+6 days')->format('Y-m-d');
+} else {
+    $viewMode = 'monthly';
+    $filterFormat = '%Y-%m';
+    $filterValue = $_GET['month'] ?? date('Y-m');
+}
+
+$query = "SELECT
         p.ID AS Payment_ID,
         u.First_Name,
         u.Last_Name,
@@ -25,14 +44,24 @@ $query = "
     JOIN users u ON u.ID = p.User_ID
     LEFT JOIN orders o ON o.Payment_ID = p.ID
     LEFT JOIN ratings r ON r.Payment_ID = p.ID
-    WHERE COALESCE(o.OrderMadeDate, p.PaymentCompletedDate) IS NOT NULL
-      AND DATE_FORMAT(COALESCE(o.OrderMadeDate, p.PaymentCompletedDate), '%Y-%m') = ?
-    GROUP BY p.ID
-    ORDER BY FirstOrderDate DESC, Payment_ID DESC
-";
+    WHERE COALESCE(o.OrderMadeDate, p.PaymentCompletedDate) IS NOT NULL ";
+
+if ($viewMode === 'weekly') {
+    $query .= "AND DATE(COALESCE(o.OrderMadeDate, p.PaymentCompletedDate)) BETWEEN ? AND ? ";
+} else {
+    $query .= "AND DATE_FORMAT(COALESCE(o.OrderMadeDate, p.PaymentCompletedDate), ?) = ? ";
+}
+
+$query .= "GROUP BY p.ID ORDER BY FirstOrderDate DESC, Payment_ID DESC";
 
 $stmt = $conn->prepare($query);
-$stmt->bind_param("s", $selectedMonth);
+
+if ($viewMode === 'weekly') {
+    $stmt->bind_param("ss", $filterValueStart, $filterValueEnd);
+} else {
+    $stmt->bind_param("ss", $filterFormat, $filterValue);
+}
+
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -43,7 +72,6 @@ $totalOrders = 0;
 while ($row = $result->fetch_assoc()) {
     $remarks = isset($row['Remarks']) ? strtolower(trim($row['Remarks'])) : '';
     $isCancelled = ($remarks === 'cancelled');
-
     $row['isCancelled'] = $isCancelled;
     $payments[] = $row;
 
@@ -53,7 +81,6 @@ while ($row = $result->fetch_assoc()) {
     }
 }
 
-// 🔄 Fetch product data
 $productMap = [];
 if (!empty($payments)) {
     $paymentIds = array_column($payments, 'Payment_ID');
@@ -77,7 +104,6 @@ if (!empty($payments)) {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,17 +115,51 @@ if (!empty($payments)) {
     <link href="../css/admin_sales_report.css" rel="stylesheet">
 </head>
 <body>
-
 <?php include "../reusable_php/navtab.php"; ?>
 
 <div class="container mt-4">
-    <h2>Monthly Sales Report</h2>
+    <h2>Sales Report</h2>
 
     <form method="get" action="" class="mb-4">
-        <label for="month" class="form-label" style="color:white;">Select Month:</label>
-        <input type="month" id="month" name="month" value="<?= htmlspecialchars($selectedMonth) ?>" class="form-control" style="max-width: 300px;">
-        <button type="submit" class="btn btn-primary mt-2">View</button>
-    </form>
+  <div class="mb-3">
+    <select id="filterType" class="form-select" onclick="showFilterInput(this.value)">
+      <option value="daily">Daily</option>
+      <option value="weekly">Weekly</option>
+      <option value="monthly">Monthly</option>
+    </select>
+  </div>
+
+  <div id="dailyInput" class="filter-group d-none">
+    <label class="form-label fw-bold text-black">📅 Select a specific day:</label>
+    <input type="date" name="date" class="form-control">
+  </div>
+
+  <div id="weeklyInput" class="filter-group d-none">
+    <label class="form-label fw-bold text-black">🗓️ Select a week:</label>
+    <input type="week" name="week" class="form-control">
+  </div>
+
+  <div id="monthlyInput" class="filter-group d-none">
+    <label class="form-label fw-bold text-black">📆 Select a month:</label>
+    <input type="month" name="month" class="form-control">
+  </div>
+
+  <div class="view button mt-3">
+    <button type="submit" class="btn btn-dark px-5 fw-bold">View</button>
+  </div>
+</form>
+
+    <p class="text-black"><strong>
+        <?php
+        if ($viewMode === 'daily') {
+            echo "Showing sales for " . date('F d, Y', strtotime($filterValue));
+        } elseif ($viewMode === 'weekly') {
+            echo "Showing sales for week of " . date('F d', strtotime($filterValueStart)) . " to " . date('F d, Y', strtotime($filterValueEnd));
+        } else {
+            echo "Showing sales for " . date('F Y', strtotime($filterValue));
+        }
+        ?>
+    </strong></p>
 
     <div class="sales-table-container">
         <table class="table table-bordered table-striped table-hover">
@@ -118,11 +178,11 @@ if (!empty($payments)) {
             <tbody>
                 <?php if (empty($payments)): ?>
                     <tr>
-                        <td colspan="8" class="text-center text-white">No records found for this month.</td>
+                        <td colspan="8" class="text-center text-black">No records found for this date.</td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($payments as $payment): ?>
-                        <tr style="text-align: center; <?= $payment['isCancelled'] ? 'background-color: #f8d7da;' : '' ?>"> 
+                        <tr style="text-align: center; <?= $payment['isCancelled'] ? 'background-color: #f8d7da;' : '' ?>">
                             <td><?= $payment['Payment_ID'] ?></td>
                             <td><?= htmlspecialchars($payment['First_Name'] . ' ' . $payment['Last_Name']) ?></td>
                             <td>
@@ -137,7 +197,7 @@ if (!empty($payments)) {
                             <td><?= $payment['FirstOrderDate'] ?></td>
                             <td>
                                 <?php if ($payment['isCancelled']): ?>
-                                            <p style = "font-size: 16px; color: red; font-weight: bold;">Cancelled</p> 
+                                    <p class="text-danger fw-bold">Cancelled</p>
                                 <?php else: ?>
                                     <?= htmlspecialchars($payment['Remarks']) ?>
                                 <?php endif; ?>
@@ -159,17 +219,32 @@ if (!empty($payments)) {
             <tfoot class="table-secondary">
                 <tr>
                     <td colspan="4" class="text-end fw-bold">Total Sales:</td>
-                    <td><strong>₱<?= number_format($totalSales, 2) ?></strong></td>
+                    <td class="text-center fw-bold">₱<?= number_format($totalSales, 2) ?></td>
                     <td colspan="2"></td>
-                    <td><strong>Orders: <?= $totalOrders ?></strong></td>
+                    <td class="fw-bold">Completed Orders: <?= $totalOrders ?></td>
                 </tr>
             </tfoot>
         </table>
     </div>
-</div>
-
+</div>  
 <script src="../javascript/JQUERY.js"></script>
 <script src="../javascript/globaljavascript.js"></script>
 <script src="../javascript/expandnavtab.js"></script>
+<script>
+  function showFilterInput(type) {
+    const groups = ['dailyInput', 'weeklyInput', 'monthlyInput'];
+    groups.forEach(id => {
+      document.getElementById(id).classList.add('d-none');
+    });
+
+    if (type === 'daily') {
+      document.getElementById('dailyInput').classList.remove('d-none');
+    } else if (type === 'weekly') {
+      document.getElementById('weeklyInput').classList.remove('d-none');
+    } else if (type === 'monthly') {
+      document.getElementById('monthlyInput').classList.remove('d-none');
+    }
+  }
+</script>
 </body>
 </html>
